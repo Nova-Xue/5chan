@@ -1,0 +1,31 @@
+{
+  "name": "5chan",
+  "version": "1.0.0",
+  "description": "A forum",
+  "main": "server.js",
+  "scripts": {
+    "test": "test",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Nova-Xue/5chan.git"
+  },
+  "keywords": [
+    "React",
+    "Node",
+    "Express",
+    "Mysql"
+  ],
+  "author": "Nova",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Nova-Xue/5chan/issues"
+  },
+  "homepage": "https://github.com/Nova-Xue/5chan#readme",
+  "dependencies": {
+    "express": "^4.17.1",
+    "mysql2": "^1.6.5",
+    "sequelize": "^5.12.1"
+  }
+}
