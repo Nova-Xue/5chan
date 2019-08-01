@@ -5,19 +5,18 @@ module.exports = (sequelize ,DataTypes) =>{
             allowNull: false,
             primaryKey: true,
             type: DataTypes.UUID,
-            defaultValue: uuid(),
             autoIncrement : false
         },
         username : {
             allowNull: false,
-            tyep : DataTypes.STRING,
+            type : DataTypes.STRING,
             validate: {
                 len: [6]
               }
         },
         password : {
             allowNull: false,
-            tyep : DataTypes.STRING,
+            type : DataTypes.STRING,
             validate: {
                 len: [8]
               }
@@ -26,20 +25,24 @@ module.exports = (sequelize ,DataTypes) =>{
             allowNull: false,
             unique: true,
             lowercase: true,
-            tyep : DataTypes.STRING,
+            type : DataTypes.STRING,
             validate: {
                 isEmail: true, 
               }
         },
         location : {
-            tyep : DataTypes.STRING
+            type : DataTypes.STRING
         }
     });
     User.associate = models =>{
         User.hasMany(models.Comment,{
             onDelete: "cascade"
-        })
-        User.hasMany(models.User,{
+        });
+        User.hasMany(models.Topic, {
+                
+            onUpdate : "cascade"
+        });
+        User.belongsToMany(models.User,{
             through : "Relationships",
             as : "follower",
             foreignKey : "followingId",

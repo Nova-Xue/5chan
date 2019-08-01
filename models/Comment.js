@@ -1,11 +1,10 @@
 const uuid = require('uuid/v4');
 module.exports = (sequelize, DataTypes) => {
-    const Comment = sequelize.define("Commet", {
+    const Comment = sequelize.define("Comment", {
         cid: {
             allowNull: false,
             primaryKey: true,
             type: DataTypes.UUID,
-            defaultValue: uuid(),
             autoIncrement: false
         },
         cbody : {
@@ -16,10 +15,14 @@ module.exports = (sequelize, DataTypes) => {
     });
     Comment.associate = models => {
         Comment.belongsTo(models.Topic, {
-            onDelete: "cascade"
+            foreignKey: {
+                allowNull: false
+              }
         });
-        Comment.hasOne(models.User,{
-            onDelete: "cascade"
+        Comment.belongsTo(models.User,{
+            foreignKey: {
+                allowNull: false
+              }
         });
     }
     return Comment;

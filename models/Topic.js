@@ -5,19 +5,6 @@ module.exports = (sequelize , DataTypes)=>{
             allowNull: false,
             primaryKey: true,
             type: DataTypes.UUID,
-            defaultValue: uuid(),
-            autoIncrement : false
-        },
-        aid : {
-            allowNull: false,
-            foreignKey: true,
-            type: DataTypes.UUID,
-            autoIncrement : false
-        },
-        rid : {
-            allowNull: false,
-            foreignKey: true,
-            type: DataTypes.UUID,
             autoIncrement : false
         },
         title :{
@@ -37,13 +24,10 @@ module.exports = (sequelize , DataTypes)=>{
         Topic.hasMany(models.Comment,{
             onDelete: "cascade"
         });
-        Topic.hasOne(models.User, {
-            foreignKey : "aid",
-            onUpdate : "cascade"
-        });
-        Topic.hasOne(models.User, {
-            foreignKey : "rid",
-            onUpdate : "cascade"
+        Topic.belongsTo(models.User, {
+            foreignKey : {
+                allowNull : false
+            }
         });
     };
    
