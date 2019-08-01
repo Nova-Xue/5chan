@@ -40,13 +40,13 @@ module.exports = (sequelize ,DataTypes) =>{
             onDelete: "cascade"
         })
         User.hasMany(models.User,{
-            through : "Relationship",
+            through : "Relationships",
             as : "follower",
             foreignKey : "followingId",
             otherKey : "followerId"
         });
         User.belongsToMany(models.User,{
-            through : "Relationship",
+            through : "Relationships",
             as : "following",
             foreignKey : "followerId",
             otherKey : "followingId"
