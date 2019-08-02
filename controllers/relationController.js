@@ -1,9 +1,11 @@
+const express = require("express");
+const router = express.Router();
 const db = require("../models");
-module.exports = (app) => {
-    app.post("/follow",(req,res)=>{
+
+    router.post("/follow",(req,res)=>{
       //id === 
     });
-    app.post("/unfollow",(req,res)=>{
+    router.post("/unfollow",(req,res)=>{
         //id === 
       });
-};
+module.exports = router;

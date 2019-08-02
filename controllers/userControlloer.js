@@ -1,30 +1,34 @@
+const express = require("express");
+const router = express.Router();
 const db = require("../models");
-module.exports = (app) => {
-   app.post("/user", (req, res) => {
+      //working
+   router.post("/user", (req, res) => {
       db.User.create(req.body)
          .then(data => console.log(data))
-         .catch(err => console.log(data));
+         .catch(err => console.log(err));
    });
-   app.put("/user/:id", (req, res) => {
+   //working 
+   router.put("/user/:id", (req, res) => {
       db.User.update({
-         email: req.params.email,
-         location: req.params.location
+         email: req.body.email,
+         location: req.body.location
          }, {
             where: {
                uid: req.params.id
             }
          })
          .then(data => console.log(data))
-         .catch(err => console.log(data));
+         .catch(err => console.log(err));
    });
-   app.delete("/user/:id", (req, res) => {
+   //working 
+   router.delete("/user/:id", (req, res) => {
       //id === delete user by id
-      db.User.destory({
+      db.User.destroy({
          where : {
             uid : req.params.id
          }
       })
          .then(data => console.log(data))
-         .catch(err => console.log(data));
+         .catch(err => console.log(err));
    });
-};
+module.exports = router;

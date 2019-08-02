@@ -1,9 +1,10 @@
+const express = require("express");
+const router = express.Router();
 const db = require("../models");
-module.exports = (app) => {
-    app.post("/comment/:id",(req,res)=>{
+    router.post("/comment/:id",(req,res)=>{
       //id === topicId
     });
-    app.delete("/comment/:id",(req,res)=>{
+    router.delete("/comment/:id",(req,res)=>{
         //id === deletecommentby id 
       });
-};
+module.exports = router;
