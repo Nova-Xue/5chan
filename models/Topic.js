@@ -18,6 +18,10 @@ module.exports = (sequelize , DataTypes)=>{
             type: DataTypes.TEXT,
             allowNull: false,
             len: [15]
+          },
+          aid : {
+              type : DataTypes.UUID,
+              allowNull: false
           }
     });
     Topic.associate = models => {
