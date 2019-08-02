@@ -9,6 +9,7 @@ module.exports = (sequelize ,DataTypes) =>{
         },
         username : {
             allowNull: false,
+            unique: true,
             type : DataTypes.STRING,
             validate: {
                 len: [6]
@@ -42,18 +43,27 @@ module.exports = (sequelize ,DataTypes) =>{
                 
             onUpdate : "cascade"
         });
-        User.belongsToMany(models.User,{
-            through : "Relationships",
-            as : "follower",
-            foreignKey : "followingId",
-            otherKey : "followerId"
+        User.hasMany(models.Relationship,{
+            onUpdate : "cascade"
         });
-        User.belongsToMany(models.User,{
-            through : "Relationships",
-            as : "following",
-            foreignKey : "followerId",
-            otherKey : "followingId"
-        });
+        // User.belongsToMany(models.User,{
+        //     through : "Relationships",
+        //     as : "follower",
+        //     foreignKey : "followingId"
+        // });
+        // User.belongsToMany(models.User,{
+        //     through : "Relationships",
+        //     as : "following",
+        //     foreignKey : "followerId"
+        // });
+        // User.belongsTo(models.User,{
+        //     through : "Relationships",
+        //     as : "following"
+        // });
+        // User.belongsTo(models.User,{
+        //     through : "Relationships",
+        //     as : "follower"
+        // });
     }
     return User;
 };

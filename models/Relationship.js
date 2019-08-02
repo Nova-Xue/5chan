@@ -1,17 +1,23 @@
 module.exports = (sequelize , DataTypes)=>{
     const Relationship = sequelize.define("Relationship",{
-        followerId : {
+        id : {
             allowNull: false,
-            foreignKey: true,
-            type: DataTypes.UUID,
-            autoIncrement : false
+            type: DataTypes.INTEGER,
+            primaryKey : true
         },
-        followingId : {
-            allowNull: false,
-            foreignKey: true,
-            type: DataTypes.UUID,
-            autoIncrement : false
+        followId : {
+            allowNull : false,
+            type : DataTypes.UUID
         }
+
     });
+    Relationship.associate = models =>{
+        Relationship.belongsTo(models.User, {
+            foreignKey : {
+                allowNull : false
+            }
+        });
+    }
+    
     return Relationship;
 };
