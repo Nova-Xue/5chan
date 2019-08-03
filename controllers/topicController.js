@@ -16,8 +16,9 @@ router.post("/topic", (req, res) => {
 
 });
 //get all topic for main page
-router.get("/topic",(req, res) => {
- 
+router.get("/topic/?page=:num",(req, res) => {  
+   const pageNum = 1;
+   if (req.params.page) pageNum = req.params.page;
    //limit pagination
    //associate with front end state
    db.Topic.findAll()

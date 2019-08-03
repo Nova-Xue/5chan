@@ -29,6 +29,17 @@ const db = require("../models");
     })
     .catch();
     });
+
+
+
+    //count
+    router.get("/commentcount/:id",(req,res)=>{
+      //id === deletecommentby id 
+      db.Comment.find()
+      .then()
+      .catch();
+    });
+
     router.delete("/comment/:id",(req,res)=>{
         //id === deletecommentby id 
         db.Comment.destroy({
