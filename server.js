@@ -2,7 +2,8 @@ const express = require("express");
 const app = express();
 const PORT = process.env.PORT || 3001;
 const db = require("./models");
-const userRoutes = require("./controllers/userControlloer");
+const userRoutes = require("./controllers/userController");
+const topicRoutes = require("./controllers/topicController");
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 if (process.env.NODE_ENV === "production") {
@@ -12,6 +13,7 @@ if (process.env.NODE_ENV === "production") {
 // Routes
 // =============================================================
 app.use(userRoutes);
+app.use(topicRoutes);
 db.sequelize.sync({force:true}).then(()=>{
     app.listen(PORT,()=>{
         console.log("App listening on PORT " + PORT);
