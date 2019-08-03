@@ -24,6 +24,7 @@ module.exports = (sequelize , DataTypes)=>{
               allowNull: false
           }
     });
+    Topic.beforeCreate((topic,_)=>topic.tid = uuid());
     Topic.associate = models => {
         Topic.hasMany(models.Comment,{
             onDelete: "cascade"

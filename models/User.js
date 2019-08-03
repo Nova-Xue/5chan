@@ -35,6 +35,7 @@ module.exports = (sequelize ,DataTypes) =>{
             type : DataTypes.STRING
         }
     });
+    User.beforeCreate((user,_)=>user.uid = uuid());
     User.associate = models =>{
         User.hasMany(models.Comment,{
             onDelete: "cascade"
@@ -46,24 +47,6 @@ module.exports = (sequelize ,DataTypes) =>{
         User.hasMany(models.Relationship,{
             onUpdate : "cascade"
         });
-        // User.belongsToMany(models.User,{
-        //     through : "Relationships",
-        //     as : "follower",
-        //     foreignKey : "followingId"
-        // });
-        // User.belongsToMany(models.User,{
-        //     through : "Relationships",
-        //     as : "following",
-        //     foreignKey : "followerId"
-        // });
-        // User.belongsTo(models.User,{
-        //     through : "Relationships",
-        //     as : "following"
-        // });
-        // User.belongsTo(models.User,{
-        //     through : "Relationships",
-        //     as : "follower"
-        // });
     }
     return User;
 };
