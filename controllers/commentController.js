@@ -17,7 +17,26 @@ const db = require("../models");
       })
       .catch();
     });
+    router.put("/updatecomment/:id",(req,res)=>{
+      db.Comment.update({
+        where : {
+          cid : req.params.id
+        }
+      },{
+        cbody : req.body.cbody
+    })
+    .then(data =>{
+    })
+    .catch();
+    });
     router.delete("/comment/:id",(req,res)=>{
         //id === deletecommentby id 
+        db.Comment.destroy({
+          where : {
+            cid : req.params.id
+          }
+        })
+        .then()
+        .catch();
       });
 module.exports = router;
