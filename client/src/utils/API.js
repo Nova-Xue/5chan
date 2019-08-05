@@ -4,4 +4,5 @@ export default {
     getTopic : (id) => axios.get("/topic/"+id),
     updateTopic : (id) =>axios.put("/topic/"+id),
     deleteTopic : (id) => axios.delete("/topic/"+id),
+    loginUser : (data) =>axios.post("/api/login", data),
 }
