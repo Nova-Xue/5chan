@@ -5,7 +5,8 @@ module.exports = (sequelize ,DataTypes) =>{
             allowNull: false,
             primaryKey: true,
             type: DataTypes.UUID,
-            autoIncrement : false
+            autoIncrement : false,
+            defaultValue : ()=> uuid()
         },
         username : {
             allowNull: false,
@@ -24,7 +25,6 @@ module.exports = (sequelize ,DataTypes) =>{
         },
         email : {
             allowNull: false,
-            unique: true,
             lowercase: true,
             type : DataTypes.STRING,
             validate: {
@@ -35,7 +35,6 @@ module.exports = (sequelize ,DataTypes) =>{
             type : DataTypes.STRING
         }
     });
-    User.beforeCreate((user,_)=>user.uid = uuid());
     User.associate = models =>{
         User.hasMany(models.Comment,{
             onDelete: "cascade"

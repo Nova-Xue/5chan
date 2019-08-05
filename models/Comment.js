@@ -5,7 +5,8 @@ module.exports = (sequelize, DataTypes) => {
             allowNull: false,
             primaryKey: true,
             type: DataTypes.UUID,
-            autoIncrement : false
+            autoIncrement : false,
+            defaultValue : ()=> uuid()
         },
         cbody : {
             type: DataTypes.TEXT,
@@ -13,7 +14,6 @@ module.exports = (sequelize, DataTypes) => {
             len: [8]
         }
     });
-    Comment.beforeCreate((comment,_)=>comment.cid = uuid());
     Comment.associate = models => {
         Comment.belongsTo(models.Topic, {
             foreignKey: {
