@@ -1,4 +1,5 @@
 import React from "react";
+import {Input,FormBtn} from "../components/Form";
 class Register extends React.Component {
     state = {
         username : "",
@@ -22,15 +23,33 @@ class Register extends React.Component {
         return (
             <div>
                 <form>
-                    username : 
-                    <input type="text" name="username" value={this.state.username} onChange={this.handleInputChange}></input>
-                    password : 
-                    <input type="password" name="password" value={this.state.password} onChange={this.handleInputChange}></input>
-                    confirm password : 
-                    <input type="password" name="confirm" value={this.state.confirm} onChange={this.handleInputChange}></input>
                     email : 
-                    <input type="email" name="email" value={this.state.email} onChange={this.handleInputChange}></input>
-                    <input type="submit"></input>
+                    <Input
+                        value={this.state.email}
+                        onChange={this.handleInputChange}
+                        name="email" />
+                    username : 
+                    <Input
+                        value={this.state.username}
+                        onChange={this.handleInputChange}
+                        name="username" />
+                    password : 
+                    <Input
+                        value={this.state.password}
+                        onChange={this.handleInputChange}
+                        name="password" />
+                    confirm :
+                    <Input
+                        value={this.state.confirm}
+                        onChange={this.handleInputChange}
+                        name="confirm" />
+                    
+                    <FormBtn
+                        // disabled={} disable check required
+                        onClick={this.handleFormSubmit}
+                    >
+                        Sign Up
+                    </FormBtn>
                 </form>
             </div>
         )

@@ -28,9 +28,6 @@ class Main extends Component {
                 <nav><a href="/">Home</a>|<a href="/profile">Profile</a>|<a href="login">login</a>|<a href="register">register</a></nav>
 
                 <table>
-                    {this.state.topics.map(topic => (<tr>
-                        {topic}
-                    </tr>))}
                     <tr>row</tr>
                     <tr>row</tr>
                     <tr>row</tr>

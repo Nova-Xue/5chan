@@ -31,7 +31,7 @@ module.exports = (sequelize , DataTypes)=>{
         });
         Topic.belongsTo(models.User, {
             foreignKey : {
-                allowNull : false
+                allowNull : true
             }
         });
     };

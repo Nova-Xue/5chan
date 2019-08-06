@@ -1,5 +1,6 @@
 import React from "react";
 import API from "../utils/API";
+import { Input, FormBtn } from "../components/Form";
 class Login extends React.Component {
     state = {
         email: "",
@@ -12,37 +13,47 @@ class Login extends React.Component {
         });
         //icon js
     }
-    handleFormSubmit = e =>{
+    handleFormSubmit = e => {
         e.preventDefault();
         //passport.js
         var userData = {
             email: this.state.email,
             password: this.state.password
-          };
-      
-          if (!userData.email || !userData.password) {
+        };
+
+        if (!userData.email || !userData.password) {
             return;
-          }
-      
-          // If we have an email and password we run the loginUser function and clear the form
-          API.loginUser(userData)
-          .then(data => console.log(data)
-          )//go to profile 
-          .catch(function(err) {
-            console.log(err);
-          });
-          emailInput.val("");
-          passwordInput.val("");
+        }
+
+        // If we have an email and password we run the loginUser function and clear the form
+        API.loginUser(userData)
+            .then(data => console.log(data)
+            )//go to profile 
+            .catch(function (err) {
+                console.log(err);
+            });
+        this.setState({ email: "", password: "" });
     }
     render() {
         return (
             <div>
                 <form>
                     email :
-                    <input type="text" name="email" value={this.state.username} onChange={this.handleInputChange}></input>
+                    <Input
+                        value={this.state.email}
+                        onChange={this.handleInputChange}
+                        name="email" />
                     password :
-                    <input type="password" name="password" value={this.state.password} onChange={this.handleInputChange}></input>
-                    <input type="submit"></input>
+                    <Input
+                        value={this.state.password}
+                        onChange={this.handleInputChange}
+                        name="password" />
+                    <FormBtn
+                        disabled={!(this.state.password && this.state.email)}
+                        onClick={this.handleFormSubmit}
+                    >
+                        Login
+                    </FormBtn>
                 </form>
             </div>
         )
