@@ -4,14 +4,16 @@ module.exports = {
          db.User.find({
             where: {
                uid: req.params.id
-            }
+            },
+            include : [db.Comment]
+
          })
-            .then(data => console.log(data))
+            .then(data => res.json(data))
             .catch(err => console.log(err));
       },
       create : (req, res) => {
          db.User.create(req.body)
-            .then(data => console.log(data))
+            .then(data => res.json(data))
             .catch(err => console.log(err));
       },
       updateById :(req, res) => {

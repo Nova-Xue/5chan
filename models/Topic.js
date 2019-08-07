@@ -15,7 +15,7 @@ module.exports = (sequelize , DataTypes)=>{
               len: [1]
             }
           },
-        tbody :{
+        topicbody :{
             type: DataTypes.TEXT,
             allowNull: false,
             len: [15]
@@ -23,7 +23,12 @@ module.exports = (sequelize , DataTypes)=>{
           aid : {
               type : DataTypes.UUID,
               allowNull: false
+          },
+          author : {
+              type : DataTypes.STRING,
+              allowNull : false
           }
+          
     });
     Topic.associate = models => {
         Topic.hasMany(models.Comment,{

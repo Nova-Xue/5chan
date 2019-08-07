@@ -1,7 +1,7 @@
 import axios from "axios";
 export default {
     getTopics : ()=> axios.get("/api/topic"),
-    getTopic : (id) => axios.get("/api/topic/"+id),
+    getTopicById : (id) => axios.get("/api/topic/"+id),
     updateTopic : (id) =>axios.put("/api/topic/"+id),
     deleteTopic : (id) => axios.delete("/api/topic/"+id),
     createTopic : (data) => axios.post("/api/topic",data),
@@ -11,4 +11,6 @@ export default {
     createComment : (data) => axios.post("/api/comment", data),
     updateComment : (id,data) => axios.put("/api/comment"+id ,+data),
     deleteCommet : (id) => axios.delete("/api/comment" + id),
+    getUser : ()=> axios.get("/api/user_data"),
+    
 }

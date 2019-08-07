@@ -4,12 +4,17 @@ import API from "../utils/API";
 class NewTopic extends Component {
     state = {
         title : "",
-        tbody : "",
-        aid : ""
+        topicbody : "",
+        uid : "",
+        username :""
     }
     componentDidMount() {
-        //get user uid as aid
-
+      this.getUser();
+    }
+    getUser = () => {
+        
+        API.getUser()
+        .then(result => this.setState({username : result.data.username, uid : result.data.uid}));
     }
     handleInputChange = e => {
         const { name, value } = e.target;
@@ -20,7 +25,15 @@ class NewTopic extends Component {
     handleFormSubmit = e =>{
         e.preventDefault();
         //validate title and tbody
-        API.createTopic(this.state);
+        API.createTopic({
+            topicbody : this.state.topicbody,
+            title : this.state.title,
+            aid : this.state.uid,
+            author : this.state.username,
+            UserUid : this.state.uid
+        })
+        .then(()=>this.props.history.push("/"))
+        .catch(err=>alert(err));
     }
     render() {
         return (
@@ -31,9 +44,11 @@ class NewTopic extends Component {
                <form>
                    title :
                    <input type="text" name="title" value={this.state.title} onChange={this.handleInputChange}></input>
+                   author :
+                   <input type="text" name="author" value={this.state.username} onChange={this.handleInputChange} readOnly></input>
                    content :
-                   <input type="text" name="tbody" value={this.state.tbody} onChange={this.handleInputChange}></input>
-                   <input type="submit" onSubmit={this.handleFormSubmit}></input>
+                   <input type="text" name="topicbody" value={this.state.topicbody} onChange={this.handleInputChange}></input>
+                   <input type="submit" onClick={this.handleFormSubmit}></input>
                </form>
 
         </div>

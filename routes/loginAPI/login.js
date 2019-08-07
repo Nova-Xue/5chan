@@ -1,9 +1,8 @@
 const router = require("express").Router();
-//var db = require("../../models");
 var passport = require("../../config/passport");
-// Matches with "/api/topic"
+// Matches with "/api/login"
 router.route("/")
   .post(passport.authenticate("local"), function(req, res) {
-    res.redirect("/profile");
+    res.json(req.user);
   });
 module.exports = router;

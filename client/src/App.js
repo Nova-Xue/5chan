@@ -16,7 +16,6 @@ function App() {
           <Route exact path="/topic/:id" component={Topic} />
           <Route exact path="/topic/:id/?commentpage=:num" component={Topic} />
           <Route exact path="/user/:id" component={Profile} />
-          <Route exact path="/profile" component={Profile} />
           <Route exact path="/login" component={Login} />
           <Route exact path="/register" component={Register} />
           <Route exact path="/newtopic" component={NewTopic} />

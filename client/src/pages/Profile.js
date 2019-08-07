@@ -2,18 +2,25 @@ import React, { Component } from "react";
 
 class Profile extends Component {
     state = {
+        username : "",
 
     }
     componentDidMount() {
-        this.loadTopic();
-        this.loadPage();
-        this.getUser();
+        
     }
     loadTopic = () => {
         //loadComCount
     }
     loadPage = () => {
 
+    }
+    loadUser = ()=>{
+        //user raw query to populate this page
+        // I need username 
+        //posts  
+        //one query
+        //followers and followings 
+        //two queries
     }
     getUser = () => {
         //passport.js
@@ -27,6 +34,7 @@ class Profile extends Component {
                 <div>
                     a card
                     with basic info
+                    and form to update
                 </div>
                 <div>
                     a table with all user post

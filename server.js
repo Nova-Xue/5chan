@@ -14,7 +14,12 @@ if (process.env.NODE_ENV === "production") {
     app.use(express.static("client/build"));
   }
 app.use(routes);
-db.sequelize.sync({force:true}).then(()=>{
+// db.sequelize.sync({force:true}).then(()=>{
+//     app.listen(PORT,()=>{
+//         console.log("App listening on PORT " + PORT);
+//     });
+// });
+db.sequelize.sync().then(()=>{
     app.listen(PORT,()=>{
         console.log("App listening on PORT " + PORT);
     });

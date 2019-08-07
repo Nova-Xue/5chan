@@ -4,38 +4,33 @@ module.exports = {
          // { limit: 10, order: '"updatedAt" DESC' }
          //with offset can be pagination
          db.Topic.findAll({
-            order: '"updatedAt" DESC',
+            order: [["updatedAt","DESC"]],
             include : [db.User]
       })
-            .then(data => console.log(data)
+            .then(data => res.json(data)
             )
             .catch(err => console.log(err)
             );
       },
       findById : (req, res) => {
-         db.Topic.find({
+         db.Topic.findOne({
             where : {
                tid : req.params.id
-            }
-            //include comments
+            },
+            include: [db.Comment]
          })
-            .then(data => console.log(data)
+            .then(data => res.json(data)
             )
             .catch(err => console.log(err)
             );
       
       },
-      create : (req, res) => {
-         //tid =uuid
-         //title
-         //tbody
-         //aid == author uuid
-         //userId default == aid 
+      create : (req, res) => { 
+         console.log("in create");
+         
          db.Topic.create(req.body)
-            .then(data => console.log(data)
-            )
-            .catch(err => console.log(err)
-            );
+            .then(data => res.json(data))
+            .catch(err => console.log(err));
       
       },
       findWithPage : (req, res) => {  

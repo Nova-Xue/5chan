@@ -12,6 +12,10 @@ module.exports = (sequelize, DataTypes) => {
             type: DataTypes.TEXT,
             allowNull: false,
             len: [8]
+        },
+        cauthor : {
+            type : DataTypes.STRING,
+            allowNull : false
         }
     });
     Comment.associate = models => {
