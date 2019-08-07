@@ -1,19 +1,17 @@
 const router = require("express").Router();
-const topicController = require("../../controllers/topicController");
+const commentController = require("../../controllers/commentController");
 
-// Matches with "/api/topic"
+// Matches with "/api/comment"
 router.route("/")
-  .get(topicController.findAll)
-  .post(topicController.create);
+  .post(commentController.create);
 
-// Matches with "/api/topic/:id"
+// Matches with "/api/comment/:id"
 router
   .route("/:id")
-  .get(topicController.findById)
-  .put(topicController.updateById)
-  .put(topicController.updateLastReply)
-  .delete(topicController.delete);
+  .put(commentController.updateById)
+  .delete(commentController.delete);
 router
-    .route("/user/:id")
-    .get(topicController.findAllByUid);
+  .route("/topic/:id")
+  .get(commentController.findCommentsByTopic);
+
 module.exports = router;

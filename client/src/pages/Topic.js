@@ -8,38 +8,86 @@ class Topic extends Component {
         aid : "",
         author : "",
         comments : [],
-        commentStatus : false
+        commentStatus : false,
+        cauthor : "",
+        loginId : "",
+        commentbody : ""
     }
     componentDidMount(){
         this.loadTopic();
+        this.getLoginUser();
+        this.loadComments();
     }
+    getLoginUser = () =>{
+        API.getUser()
+            .then(result => {
+                alert(result);
+                this.setState({ cauthor: result.data.username, loginId: result.data.uid });
+            })
+            .catch(err => { });
+    }
+    //no comments
     loadTopic = () =>{
         API.getTopicById(this.props.match.params.id)
         .then(result => {
-            alert(JSON.stringify(result.data.topicbody))
-            const array = this.state.comments;
-            result.data.Comments.forEach(element => {
-                array.push(element);
-            });
+            //alert(JSON.stringify(result.data.topicbody))
             this.setState({
                 tid : result.data.tid,
                 title : result.data.title,
                 topicbody : result.data.topicbody,
                 author : result.data.author,
-                comments : array
-            })
+            });
         })
         .catch(err=>console.log(err));
-            
     }
-    getUser = ()=>{
+    loadComments =()=>{
+        API.getComments(this.props.match.params.id)
+            .then(result=>{
+                const comments = this.state.comments;
+                
+                result.data.forEach(element => {
+                    comments.push(element);
+                });
+                this.setState({
+                    comments : comments
+                });
+            })
+            .catch(err=>console.log(err));
     }
     handleComment = e =>{
         e.preventDefault();
         this.setState({commentStatus : true});
     }
+    handleCommentCancel = e =>{
+        e.preventDefault();
+        this.setState({commentStatus : false});
+    }
+    handleInputChange = e => {
+        const { name, value } = e.target;
+        this.setState({
+            [name]: value
+        });
+    }
+    //no update
     saveComment = e =>{
         alert("in save");
+        e.preventDefault();
+        API.createComment({
+            cbody : this.state.commentbody,
+            cauthor : this.state.cauthor,
+            TopicTid : this.state.tid,
+            UserUid : this.state.loginId
+        })
+        .then(result => {
+            API.updateTopic(this.props.match.params.id,{
+                UserUid : this.state.loginId
+            }).then(result=> result&& window.location.reload()).catch(err=>console.log(err));
+        })
+        .catch(err=>console.log(err));
+
+    }
+    test =()=>{
+        alert(this.state.comments);
     }
     render (){
         const commentStatus = this.state.commentStatus;
@@ -47,11 +95,15 @@ class Topic extends Component {
         if (commentStatus) {
             commentForm = ( <form>
                 Comment : 
-                <input type="txt"/>
+                <input type="txt" name="commentbody" onChange={this.handleInputChange}/>
                 <input type="submit" onClick={this.saveComment}/>
+                <button onClick={this.handleCommentCancel}>
+                       Cancel
+                </button >
                  </form>);
         }
         return(<div>
+            <button onClick={this.test}>test</button>
             <div>
             {this.state.author}
             </div>
@@ -68,8 +120,9 @@ class Topic extends Component {
                    <button onClick={this.handleComment}>
                        Comment
                    </button >
+                   
                </tr>
-               {this.state.comments? (<tr>
+               {this.state.comments.length===0? (<tr>
                    Be the first to comment
                </tr>):
                    this.state.comments.map(comment => (

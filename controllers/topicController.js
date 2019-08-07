@@ -17,7 +17,6 @@ module.exports = {
             where : {
                tid : req.params.id
             },
-            include: [db.Comment]
          })
             .then(data => res.json(data)
             )

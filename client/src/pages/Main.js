@@ -4,21 +4,21 @@ class Main extends Component {
     state = {
         topics: [],
         uid: "",
-        username : ""
+        username: ""
     }
     componentDidMount() {
-       // this.loadTopic();
-       // this.loadPage();
+        // this.loadTopic();
+        // this.loadPage();
         this.loadTopic();
-        this.getUser();
-        
+        this.getLoginUser();
+
     }
-    getUser = () => {
-        
-        
+    getLoginUser = () => {
+
+
         API.getUser()
-        .then(result => this.setState({username : result.data.username, uid : result.data.uid}))
-        .catch(err=>{});
+            .then(result => this.setState({ username: result.data.username, uid: result.data.uid }))
+            .catch(err => { });
     }
     loadTopic = () => {
         API.getTopics()
@@ -30,12 +30,12 @@ class Main extends Component {
                 result.data.forEach(element => {
                     array.push(element);
                 });
-                this.setState({topics : array});
+                this.setState({ topics: array });
             })
             .catch(err => console.log(err));
         //loadComCount   res => this.setState({ topics: res.data })
     }
-    checkUser = e =>{
+    checkUser = e => {
         if (!this.state.uid) {
             e.preventDefault();
             alert("you have not logged in");
@@ -44,46 +44,49 @@ class Main extends Component {
     render() {
         return (
             <div>
-                <nav><a href="/">Home</a>|<a href={"/user/"+this.state.uid} onClick={this.checkUser}>Profile</a>|<a href="login">login</a>|<a href="register">register</a>
-                { this.state.username ? (<a>Welcome {this.state.username}</a>) : (<a>Please Login</a>)} 
-                <a href="/newtopic" onClick={this.checkUser}>New Topic</a>
+                <nav><a href="/">Home</a>|<a href={"/user/" + this.state.uid} onClick={this.checkUser}>Profile</a>|<a href="login">login</a>|<a href="register">register</a>
+                    {this.state.username ? (<a>Welcome {this.state.username}</a>) : (<a>Please Login</a>)}
+                    <a href="/newtopic" onClick={this.checkUser}>New Topic</a>
                 </nav>
                 {/* table component and conditional render */}
-               <table>
-                   <tr>
-                   <th>
-                       author
+                <table>
+                    <tr>
+                        <th>
+                            author
                    </th>
-                   <th>
-                       title
+                        <th>
+                            title
                    </th>
-                   <th>
-                       createdAt
+                        <th>
+                            createdAt
                    </th>
-                   <th>
-                       last reply
+                        <th>
+                            last reply
                    </th>
-                   </tr>
-                   <tbody>
-                       {this.state.topics.map(topic => (
-                           <tr>
-                               <td>
-                                   {topic.author}
-                               </td>
-                               <td>
-                                   <a href={"/topic/"+topic.tid}>{topic.title}</a>
-                               </td>
-                               <td>
+                    </tr>
+                    <tbody>
+                        {this.state.topics.map(topic => (
+                            <tr>
+                                <td>
+                                    <a href={"/user/" + topic.aid}>
+                                        {topic.author}
+                                    </a>
 
-                                   {topic.createdAt}
-                               </td>
-                               <td>
-                                   {topic.updatedAt} by {topic.User.username}
-                               </td>
-                           </tr>
-                       ))}
-                   </tbody>
-               </table>
+                                </td>
+                                <td>
+                                    <a href={"/topic/" + topic.tid}>{topic.title}</a>
+                                </td>
+                                <td>
+
+                                    {topic.createdAt}
+                                </td>
+                                <td>
+                                    {topic.updatedAt} by <a href={"/user/"+topic.User.uid}>{topic.User.username}</a>
+                                </td>
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
             </div>)
     }
 }
