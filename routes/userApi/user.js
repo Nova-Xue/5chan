@@ -12,4 +12,10 @@ router
 router
   .route("/")
   .post(userController.create);
+router
+  .route("/follower/:id")
+  .get(userController.getFollower);
+router
+  .route("/following/:id")
+  .get(userController.getFollowing)
 module.exports = router;

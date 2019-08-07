@@ -49,9 +49,10 @@ module.exports = {
          db.Topic.findAll({
             where : {
                aid : req.params.id
-            }
+            },
+            order : [["createdAt","DESC"]]
          })
-            .then(data => console.log(data)
+            .then(data => res.json(data)
             )
             .catch(err => console.log(err)
             );

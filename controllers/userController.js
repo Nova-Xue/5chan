@@ -1,11 +1,11 @@
 const db = require("../models");
+const sequelize = require("../node_modules/sequelize");
 module.exports = {
       findById : (req, res) => {
-         db.User.find({
+         db.User.findOne({
             where: {
                uid: req.params.id
             },
-            include : [db.Comment]
 
          })
             .then(data => res.json(data))
@@ -37,57 +37,16 @@ module.exports = {
          })
             .then(data => console.log(data))
             .catch(err => console.log(err));
+      },
+      getFollower : (res,req)=>{
+         sequelize.query("select *from `relationships` where `followId` = "+res.params.id)
+         .then(data => res.json(data))
+         .catch(err => console.log(err));
+      },
+      getFollowing : (res,req)=>{
+         sequelize.query("select *from `relationships` where `UserUid` = "+res.params.id)
+         .then(data => res.json(data))
+         .catch(err => console.log(err));
       }
 }
 
-//get single user 
-// router.get("/user/:id", (req, res) => {
-//    db.User.find({
-//       where: {
-//          uid: req.params.id
-//       }
-//    })
-//       .then(data => console.log(data))
-//       .catch(err => console.log(err));
-// });
-//check existence of user before register
-// router.get("/checkusername/:username", (req, res) => {
-//    db.User.find({
-//       where: {
-//          username: req.params.username
-//       }
-//    })
-//       .then(data => console.log(data))
-//       .catch(err => console.log(err));
-// });
-//working
-// router.post("/user", (req, res) => {
-//    db.User.create(req.body)
-//       .then(data => console.log(data))
-//       .catch(err => console.log(err));
-// });
-//working 
-// router.put("/user/:id", (req, res) => {
-//    db.User.update({
-//       email: req.body.email,
-//       location: req.body.location
-//    }, {
-//          where: {
-//             uid: req.params.id
-//          }
-//       })
-//       .then(data => console.log(data))
-//       .catch(err => console.log(err));
-// });
-// //working 
-// router.delete("/user/:id", (req, res) => {
-//    //id === delete user by id
-//    db.User.destroy({
-//       where: {
-//          uid: req.params.id
-//       }
-//    })
-//       .then(data => console.log(data))
-//       .catch(err => console.log(err));
-// });
-// module.exports = router;

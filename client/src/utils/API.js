@@ -12,5 +12,8 @@ export default {
     updateComment : (id,data) => axios.put("/api/comment"+id ,+data),
     deleteCommet : (id) => axios.delete("/api/comment" + id),
     getUser : ()=> axios.get("/api/user_data"),
-    
+    getUserById : (id)=> axios.get("/api/user/"+id),
+    getUserTopic : (id) =>axios.get("/api/topic/user/"+id),
+    getUserFollower : (id) =>axios.get("/api/user/follower"+id),
+    getUserFollower : (id) =>axios.get("/api/user/following"+id)
 }
