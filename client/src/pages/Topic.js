@@ -36,6 +36,7 @@ class Topic extends Component {
                 title : result.data.title,
                 topicbody : result.data.topicbody,
                 author : result.data.author,
+                aid : result.data.aid
             });
         })
         .catch(err=>console.log(err));
@@ -87,7 +88,7 @@ class Topic extends Component {
 
     }
     test =()=>{
-        alert(this.state.comments);
+        alert(this.state.aid);
     }
     render (){
         const commentStatus = this.state.commentStatus;
@@ -117,6 +118,9 @@ class Topic extends Component {
                    <td>
                    {this.state.topicbody}
                    </td>
+                   <td>
+                       {this.state.aid===this.state.loginId && (<button>Edit</button>)}
+                   </td>
                    <button onClick={this.handleComment}>
                        Comment
                    </button >
@@ -128,13 +132,22 @@ class Topic extends Component {
                    this.state.comments.map(comment => (
                             <tr>
                                 <td>
-                                    {comment.UserUid}
+                                    {comment.cauthor}
                                 </td>
                                 <td>
                                     {comment.cbody}
                                 </td>
                                 <td>
                                     {comment.createdAt}
+                                </td>
+                                <td>
+                                    <button>Reply</button>
+                                    {this.state.loginId===comment.UserUid && (<button>
+                                        Edit
+                                    </button>)}
+                                    {this.state.loginId===comment.UserUid && (<button>
+                                        Delete
+                                    </button>)}
                                 </td>
                             </tr>
                    )) }
