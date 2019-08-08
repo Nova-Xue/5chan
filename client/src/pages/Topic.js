@@ -11,7 +11,8 @@ class Topic extends Component {
         commentStatus : false,
         cauthor : "",
         loginId : "",
-        commentbody : ""
+        commentbody : "",
+        editStatus : false
     }
     componentDidMount(){
         this.loadTopic();
@@ -69,7 +70,19 @@ class Topic extends Component {
             [name]: value
         });
     }
+    deleteComment = e =>{
+        const id = e.target.value;
+        API.deleteComment(id)
+        .then(result => {
+            window.location.reload();
+        })
+        .catch(err=>console.log(err));
+    }
+    
     //no update
+    updateComment = e =>{
+
+    }
     saveComment = e =>{
         alert("in save");
         e.preventDefault();
@@ -87,6 +100,7 @@ class Topic extends Component {
         .catch(err=>console.log(err));
 
     }
+    //handleReplyClick
     test =()=>{
         alert(this.state.aid);
     }
@@ -145,7 +159,7 @@ class Topic extends Component {
                                     {this.state.loginId===comment.UserUid && (<button>
                                         Edit
                                     </button>)}
-                                    {this.state.loginId===comment.UserUid && (<button>
+                                    {this.state.loginId===comment.UserUid && (<button value={comment.cid} onClick={this.deleteComment}>
                                         Delete
                                     </button>)}
                                 </td>

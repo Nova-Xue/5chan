@@ -32,18 +32,18 @@ module.exports = {
             .catch(err => console.log(err));
       
       },
-      findWithPage : (req, res) => {  
-         const pageNum = 1;
-         if (req.params.page) pageNum = req.params.page;
-         //limit pagination
-         //associate with front end state
-         db.Topic.findAll()
-            .then(data => console.log(data)
-            )
-            .catch(err => console.log(err)
-            );
+      // findWithPage : (req, res) => {  
+      //    const pageNum = 1;
+      //    if (req.params.page) pageNum = req.params.page;
+      //    //limit pagination
+      //    //associate with front end state
+      //    db.Topic.findAll()
+      //       .then(data => console.log(data)
+      //       )
+      //       .catch(err => console.log(err)
+      //       );
       
-      },
+      // },
       findAllByUid : (req, res) => {
          db.Topic.findAll({
             where : {

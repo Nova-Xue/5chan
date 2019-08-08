@@ -5,7 +5,7 @@ class Profile extends Component {
     state = {
         username : "",
         uid : "",
-        login : "",
+        loginId : "",
         topics : [],
         follower : 0,
         following : 0,
@@ -14,12 +14,20 @@ class Profile extends Component {
     }
     componentDidMount() {
         this.loadUser();
+        this.loadTopic();
+        this.getUser();
     }
     loadTopic = () => {
-        //loadComCount
-    }
-    loadPage = () => {
-
+        API.getUserTopic(this.props.match.params.id)
+            .then(result => {
+                //alert(JSON.stringify(result.data))
+                const array = this.state.topics;
+                result.data.forEach(element => {
+                    array.push(element);
+                });
+                this.setState({topics : array});
+            })
+            .catch(err=>console.log(err));
     }
     loadUser = ()=>{
         //user raw query to populate this page
@@ -59,7 +67,12 @@ class Profile extends Component {
         alert(this.state.topics);
     }
     getUser = () => {
-        //passport.js
+        API.getUser()
+        .then(result => {
+            alert(result);
+            this.setState({ loginId: result.data.uid });
+        })
+        .catch(err => { });
     }
     render() {
         return (
@@ -71,6 +84,9 @@ class Profile extends Component {
                     <span>
                         {this.state.username}
                     </span>
+                    {this.state.loginId !== this.state.uid && (<button>
+                        Follow
+                    </button>)}
                     <br/>
                     <span>
                         follower
@@ -85,10 +101,17 @@ class Profile extends Component {
                         {this.state.following}
                     </span>
                 </div>
+                <button onClick={this.test}>test</button>
                 <div>
-                    <button onClick={this.test}>test</button>
+                    {this.state.topics.map(topic => {
+                        return (
+                            <span>
+                                {topic.title}
+                            </span>
+                        )
+                    })}
                 </div>
-
+               
         </div>
         )
     }

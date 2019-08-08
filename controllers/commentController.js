@@ -12,7 +12,8 @@ module.exports = {
               db.Comment.findAll({
                 where : {
                   TopicTid : req.params.id
-                }
+                },
+                order : [["createdAt","ASC"]]
               }).then(data => res.json(data)).catch(err=>console.log(err));
             }
             ,
@@ -24,7 +25,7 @@ module.exports = {
               }).then(data => res.json(data)).catch(err=>console.log(err));
             },
             delete : (req,res) =>{
-              db.Comment.detroy({
+              db.Comment.destroy({
                 where : {
                   cid : req.params.id
                 }
