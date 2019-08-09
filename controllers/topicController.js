@@ -60,32 +60,17 @@ module.exports = {
       updateById : (req, res) => {
          //update last reply
          //id == reply uuid
-         db.Topic.update({
-            title: req.body.title,
-            tbody: req.body.tbody
-         }, {
+         db.Topic.update(req.body, {
                where: {
                   tid: req.params.id
                }
             })
-            .then(data => console.log(data)
+            .then(data=>res.json(data)
             )
             .catch(err => console.log(err)
             );
       },
-      updateLastReply : (req, res) => {
-         db.Topic.update({
-            UserUid: req.body.uid
-         }, {
-               where: {
-                  tid: req.params.id
-               }
-            })
-            .then(data => console.log(data)
-            )
-            .catch(err => console.log(err)
-            );
-      },
+   
       delete : (req, res) => {
          db.Topic.destroy({
             where: {

@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import API from "../utils/API";
-
+import {Row,Col } from "../components/Grid";
+import moment from "../../node_modules/moment";
 class Profile extends Component {
     state = {
         username : "",
@@ -9,9 +10,12 @@ class Profile extends Component {
         topics : [],
         follower : 0,
         following : 0,
+        followerId : [],
+        followingId : [],
         date : ""
 
     }
+    //load relation
     componentDidMount() {
         this.loadUser();
         this.loadTopic();
@@ -42,26 +46,7 @@ class Profile extends Component {
         })
         .catch(err=>console.log(err)
         );
-        // //topics
-        // API.getUserTopic(this.props.match.params.id)
-        // .then(result => {
-        //     alert(JSON.stringify(result.data))
-        //     const array = this.state.topics;
-        //     array.concat(result.data);
-        //     this.setState({topics : array});
-        // })
-        // .catch(err=>console.log(err)
-        // );
-        // //followers and followings 
-        // API.getUserFollower(this.props.match.params.id)
-        // .then(result => alert(result.data))
-        // .catch(err=>console.log(err)
-        // );
-        
-        // API.getUserFollowing(this.props.match.params.id)
-        // .then(result => alert(result.data))
-        // .catch(err=>console.log(err)
-        // );
+      
     }
     test = ()=>{
         alert(this.state.topics);
@@ -75,18 +60,42 @@ class Profile extends Component {
         .catch(err => { });
     }
     render() {
+        let topicGroup;
+        if (this.state.topics.length !==0) {
+            topicGroup = (
+                <div className="container">
+                    {
+                        this.state.topics.map(
+                            topic => (
+                                <Row>
+                                    <a href={"/topic/"+topic.tid}>
+                                        {topic.title}
+                                    </a>
+                                    <button vaule={topic.tid} onClick={this.handleTitleClick}>
+                                        Delete
+                                    </button>
+                                </Row>
+                            )
+                        )
+                    }
+                </div>
+            )
+        }
         return (
         <div>
-                <nav>
-                    123
-                </nav>
                 <div>
                     <span>
                         {this.state.username}
                     </span>
-                    {this.state.loginId !== this.state.uid && (<button>
+                    
+                    {/* follow button  unfollow button following state friends following stranger */}
+                    <br/>
+                    <span>
+                        Join 5chan since {moment(this.state.date).format("YYYY.MM.DD")}
+                    </span>
+                    {/* {this.state.loginId !=="" && this.state.loginId !== this.state.uid && (<button>
                         Follow
-                    </button>)}
+                    </button>)} */}
                     <br/>
                     <span>
                         follower
@@ -101,15 +110,12 @@ class Profile extends Component {
                         {this.state.following}
                     </span>
                 </div>
+                <div>
+                    profile update
+                </div>
                 <button onClick={this.test}>test</button>
                 <div>
-                    {this.state.topics.map(topic => {
-                        return (
-                            <span>
-                                {topic.title}
-                            </span>
-                        )
-                    })}
+                    {topicGroup}
                 </div>
                
         </div>

@@ -1,5 +1,7 @@
 import React, { Component } from "react";
 import API from "../utils/API";
+import { Row, Col } from "../components/Grid";
+
 class Topic extends Component {
     state = {
         tid : "",
@@ -8,13 +10,16 @@ class Topic extends Component {
         aid : "",
         author : "",
         comments : [],
+        commentCount : 0,
         commentStatus : false,
         cauthor : "",
         loginId : "",
         commentbody : "",
-        editStatus : false
+        editId : "",
+        formStatus : false,
+        replyId : ""
     }
-    componentDidMount(){
+    componentWillMount(){
         this.loadTopic();
         this.getLoginUser();
         this.loadComments();
@@ -37,7 +42,7 @@ class Topic extends Component {
                 title : result.data.title,
                 topicbody : result.data.topicbody,
                 author : result.data.author,
-                aid : result.data.aid
+                aid : result.data.aid,
             });
         })
         .catch(err=>console.log(err));
@@ -51,7 +56,8 @@ class Topic extends Component {
                     comments.push(element);
                 });
                 this.setState({
-                    comments : comments
+                    comments : comments,
+                    commentCount : comments.length
                 });
             })
             .catch(err=>console.log(err));
@@ -78,11 +84,6 @@ class Topic extends Component {
         })
         .catch(err=>console.log(err));
     }
-    
-    //no update
-    updateComment = e =>{
-
-    }
     saveComment = e =>{
         alert("in save");
         e.preventDefault();
@@ -91,18 +92,42 @@ class Topic extends Component {
             cauthor : this.state.cauthor,
             TopicTid : this.state.tid,
             UserUid : this.state.loginId
-        })
+        })//not working here
         .then(result => {
-            API.updateTopic(this.props.match.params.id,{
-                UserUid : this.state.loginId
-            }).then(result=> result&& window.location.reload()).catch(err=>console.log(err));
+            if(result){
+                API.updateTopic(this.props.match.params.id,{
+                    UserUid : this.state.loginId
+                })
+                .then(result => {
+                    if (result) {
+                        window.location.reload();
+                    }
+                })
+                .catch(err=>console.log(err));
+            }
         })
         .catch(err=>console.log(err));
 
     }
-    //handleReplyClick
+    hanldeEditClick = (e)=>{
+        const editId = e.target.value;
+        if(this.state.editId !== editId){
+            this.setState({editId : editId});
+        }else{
+            this.setState({editId : ""});
+        }
+    }
+    handleReplyClick= (e)=>{
+        const replyId = e.target.value;
+        alert("inclick")
+        if(this.state.replyId !== replyId){
+            this.setState({replyId : replyId});
+        }else{
+            this.setState({replyId : ""});
+        }
+    }
     test =()=>{
-        alert(this.state.aid);
+        alert(this.state.commentCount);
     }
     render (){
         const commentStatus = this.state.commentStatus;
@@ -119,54 +144,70 @@ class Topic extends Component {
         }
         return(<div>
             <button onClick={this.test}>test</button>
-            <div>
-            {this.state.author}
-            </div>
-            <table>
-               <tr>
-                   <td>
-                   {this.state.title}
-                   </td>
-               </tr>
-               <tr>
-                   <td>
-                   {this.state.topicbody}
-                   </td>
-                   <td>
-                       {this.state.aid===this.state.loginId && (<button>Edit</button>)}
-                   </td>
-                   <button onClick={this.handleComment}>
-                       Comment
+            <div className="container">
+                <Row>
+                {this.state.title}
+                </Row>
+                <Row>
+                    <Col grid="md-3">
+                    {this.state.author}should be a card
+                    </Col>
+                    <Col grid="md-9">
+                    {this.state.topicbody}
+                    {this.state.aid===this.state.loginId && (<button>Edit</button>)}
+                    <button onClick={this.handleComment}>
+                       Comment need check login
                    </button >
-                   
-               </tr>
-               {this.state.comments.length===0? (<tr>
-                   Be the first to comment
-               </tr>):
-                   this.state.comments.map(comment => (
-                            <tr>
-                                <td>
-                                    {comment.cauthor}
-                                </td>
-                                <td>
-                                    {comment.cbody}
-                                </td>
-                                <td>
-                                    {comment.createdAt}
-                                </td>
-                                <td>
-                                    <button>Reply</button>
-                                    {this.state.loginId===comment.UserUid && (<button>
-                                        Edit
-                                    </button>)}
-                                    {this.state.loginId===comment.UserUid && (<button value={comment.cid} onClick={this.deleteComment}>
-                                        Delete
-                                    </button>)}
-                                </td>
-                            </tr>
-                   )) }
-            </table>
-            {commentForm}
+                    </Col>
+                </Row>
+                <Row>
+                    {commentForm}
+                </Row>
+                {this.state.comments.length===0? (
+                    <Row>
+                        Be the first to Comment
+                    </Row>
+               ):this.state.comments.map(comment => (
+                    <Row>
+                        <Col grid="md-3">
+                        {comment.cauthor}   should be a card
+                        </Col>
+                        <Col grid="md-9">
+                           
+                           <div className="cbody" ref={"ref"+comment.cid}>
+                            {comment.cbody}
+                            </div>
+                            <div>
+                            {comment.updateddAt}{comment.createdAt!==comment.updatedAt && (<span>Edited</span>)}
+                            </div>
+                           
+                            {this.state.loginId !== undefined && <button value={comment.cid} onClick={this.handleReplyClick}>Reply</button>}
+                            {this.state.loginId===comment.UserUid && (<button value={comment.cid} onClick={this.hanldeEditClick}>
+                                        Edit</button>)}
+                            {this.state.loginId===comment.UserUid && (<button value={comment.cid} onClick={this.deleteComment}>
+                                        Delete</button>)}
+                            {this.state.replyId===comment.cid && (
+                                <form>
+                                    <input name="replyTo" value={"@"+comment.cauthor} readOnly/>
+                                    <input name="replybody" type="text"/>
+                                    
+                                    <input type="submit" onClick={this.submitReply}/>
+                                    <button value={comment.cid} onClick={this.handleReplyClick}>Cancel</button>
+                                </form>
+                            )}
+                            {this.state.editId===comment.cid && (
+                                <form>
+
+                                    <input value={comment.cbody}/>
+                                    <input type="submit" onClick={this.updateComment}/>
+                                    <button value={comment.cid} onClick={this.hanldeEditClick}>Cancel</button>
+                                </form>
+                            )}
+                            
+                        </Col>
+                    </Row>
+                ))}
+            </div>
         </div>)
     }
 }

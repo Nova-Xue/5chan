@@ -11,7 +11,6 @@ router
   .route("/:id")
   .get(topicController.findById)
   .put(topicController.updateById)
-  .put(topicController.updateLastReply)
   .delete(topicController.delete);
 router
     .route("/user/:id")

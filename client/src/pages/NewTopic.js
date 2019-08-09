@@ -38,9 +38,6 @@ class NewTopic extends Component {
     render() {
         return (
         <div>
-                <nav>
-                    123
-                </nav>
                <form>
                    title :
                    <input type="text" name="title" value={this.state.title} onChange={this.handleInputChange}></input>

@@ -31,9 +31,7 @@ class Login extends React.Component {
 
                 if(result.data.email){
                     if(result.data.password){
-                        //this.props.history.push("/");
-                        alert("logged in")
-                        this.props.history.push("/");
+                        window.location.href="/";
                     }else{
                         alert("wrong password");
                     }
@@ -45,16 +43,7 @@ class Login extends React.Component {
                 console.log(err);
             });
         this.setState({ email: "", password: "" });
-    }   
-        // testLogin = e =>{
-        //     e.preventDefault();
-        //     API.getUser().then(result =>{
-        //         if(result.data.)
-        //         this.props.history.push("/");
-        //     });
-        // }
-
-      
+    } 
     render() {
             return (
                 <div>
