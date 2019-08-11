@@ -20,7 +20,7 @@ module.exports = {
             updateById : (req,res)=>{
               db.Comment.update(req.body,{
                 where : {
-                  cid : req.params.cid
+                  cid : req.params.id
                 }
               }).then(data => res.json(data)).catch(err=>console.log(err));
             },

@@ -1,18 +1,16 @@
 import React, { Component } from "react";
 import API from "../utils/API";
-import {Row,Col } from "../components/Grid";
+import { Row, Col } from "../components/Grid";
 import moment from "../../node_modules/moment";
 class Profile extends Component {
     state = {
-        username : "",
-        uid : "",
-        loginId : "",
-        topics : [],
-        follower : 0,
-        following : 0,
-        followerId : [],
-        followingId : [],
-        date : ""
+        username: "",
+        uid: "",
+        loginId: "",
+        topics: [],
+        followerId: [],
+        followingId: [],
+        date: ""
 
     }
     //load relation
@@ -20,6 +18,8 @@ class Profile extends Component {
         this.loadUser();
         this.loadTopic();
         this.getUser();
+        this.loadFollower();
+        //this.loadFollowing();
     }
     loadTopic = () => {
         API.getUserTopic(this.props.match.params.id)
@@ -29,96 +29,197 @@ class Profile extends Component {
                 result.data.forEach(element => {
                     array.push(element);
                 });
-                this.setState({topics : array});
+                this.setState({ topics: array });
             })
-            .catch(err=>console.log(err));
+            .catch(err => console.log(err));
     }
-    loadUser = ()=>{
-        //user raw query to populate this page
+    loadUser = () => {
         // user info
         API.getUserById(this.props.match.params.id)
-        .then(result => {
-            this.setState({
-                username : result.data.username,
-                uid : result.data.uid,
-                date: result.data.createdAt
+            .then(result => {
+                this.setState({
+                    username: result.data.username,
+                    uid: result.data.uid,
+                    date: result.data.createdAt
+                })
             })
-        })
-        .catch(err=>console.log(err)
-        );
-      
+            .catch(err => console.log(err)
+            );
+
     }
-    test = ()=>{
-        alert(this.state.topics);
+    loadFollowing = () => {
+        API.getUserFollowing(this.props.match.params.id)
+            .then(result => {
+                const array = this.state.followingId;
+                result.data.forEach(element => {
+                    array.push(element.followId);
+                });
+                this.setState({
+                    followingId : array
+                });
+            })
+            .catch(err => console.log(err));
     }
+    loadFollower = () => {
+        API.getUserFollower(this.props.match.params.id)
+            .then(result => {
+                const array = this.state.followerId;
+                result.data.forEach(element => {
+                    array.push(element.UserUid);
+                });
+                this.setState({
+                    followerId : array
+                });
+            })
+            .catch(err => console.log(err));
+    }
+
     getUser = () => {
         API.getUser()
-        .then(result => {
-            alert(result);
-            this.setState({ loginId: result.data.uid });
+            .then(result => {
+                //alert(result);
+                this.setState({ loginId: result.data.uid });
+            })
+            .catch(err => { });
+    }
+    followUser = () => {
+        API.followUser({
+            followId: this.state.uid,
+            UserUid: this.state.loginId
         })
-        .catch(err => { });
+            .then(result => window.location.reload())
+            .catch(err => console.log(err));
+    }
+    unfollowUser = () => {
+        API.unfollowUser({
+            followId: this.state.uid,
+            UserUid: this.state.loginId
+        })
+            .then(result => window.location.reload())
+            .catch(err => console.log(err));
+    }
+    relation = () => {
+        if (this.state.loginId===undefined ||this.state.loginId === this.state.uid) return "";
+        if (this.state.followerId.includes(this.state.loginId)) {
+            if (this.state.followingId.includes(this.state.loginId)) {
+                return "Friend"
+            } else {
+                return "Following"
+            }
+        } else if (this.state.followingId.includes(this.state.loginId)) {
+            return "Being followed"
+        } else {
+            return "Stranger"
+        }
+    }
+    test = () => {
+        alert(this.relation());
     }
     render() {
-        let topicGroup;
-        if (this.state.topics.length !==0) {
-            topicGroup = (
-                <div className="container">
-                    {
-                        this.state.topics.map(
-                            topic => (
-                                <Row>
-                                    <a href={"/topic/"+topic.tid}>
-                                        {topic.title}
-                                    </a>
-                                    <button vaule={topic.tid} onClick={this.handleTitleClick}>
-                                        Delete
-                                    </button>
-                                </Row>
-                            )
-                        )
-                    }
-                </div>
-            )
+        let btnDiv;
+        switch (this.relation()) {
+            case "Friend":
+                btnDiv = (<div>
+                    <span>
+                        Friend
+                        </span>
+                    <button onClick={this.unfollowUser}>Unfollow</button>
+                </div>)
+                break;
+            case "Following":
+                btnDiv = (
+                    <div>
+                        <span>
+                            You are following this user
+                        </span>
+                        <button onClick={this.unfollowUser}>Unfollow</button>
+                    </div>
+                )
+                break;
+            case "Being followed":
+                btnDiv = (
+                    <div>
+                        <span> Following you</span>
+                        <button onClick={this.followUser}>Follow</button>
+                    </div>
+                )
+                break;
+            case "Stranger":
+                btnDiv = (
+                    <div>
+                        <button onClick={this.followUser}>Follow</button>
+                    </div>
+
+                )
+                break;
+            case "":
+                btnDiv = (
+                    <div>
+
+                    </div>
+                )
+                break;
         }
+
         return (
-        <div>
+            <div>
                 <div>
                     <span>
                         {this.state.username}
                     </span>
-                    
+                    {/* conditional button */}
+                    {btnDiv}
                     {/* follow button  unfollow button following state friends following stranger */}
-                    <br/>
+                    <br />
                     <span>
                         Join 5chan since {moment(this.state.date).format("YYYY.MM.DD")}
                     </span>
-                    {/* {this.state.loginId !=="" && this.state.loginId !== this.state.uid && (<button>
-                        Follow
-                    </button>)} */}
-                    <br/>
+
+                    <br />
                     <span>
                         follower
                     </span>
                     <span>
-                        {this.state.follower}
+                        {this.state.followerId.length}
                     </span>
                     <span>
                         following
                     </span>
                     <span>
-                        {this.state.following}
+                        {this.state.followingId.length}
                     </span>
                 </div>
                 <div>
                     profile update
                 </div>
                 <button onClick={this.test}>test</button>
-                <div>
-                    {topicGroup}
+                <div className="container">
+                    {this.state.topics.length === 0 ? (
+                        <span>
+                            You don't have any topic
+                    </span>
+
+                    ) :
+                        this.state.topics.map(
+                            topic => (
+                                <Row>
+                                    <a href={"/topic/" + topic.tid}>
+                                        {topic.title}
+                                    </a>
+                                    <span>
+                                        Posted at {moment(topic.createdAt).format("YYYY/MM/DD,HH:mm:ss")}
+                                    </span>
+                                    {this.state.loginId === this.state.uid && (
+                                        <button vaule={topic.tid} onClick={this.handleTitleClick}>
+                                            Delete
+                                    </button>)}
+                                </Row>
+                            )
+                        )
+                    }
                 </div>
-               
-        </div>
+
+            </div>
         )
     }
 }

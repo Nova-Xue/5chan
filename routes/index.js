@@ -5,13 +5,14 @@ const userApi = require("./userApi");
 const loginApi = require("./loginApi");
 const commentApi = require("./commentApi");
 const registerApi = require("./registerApi");
-var passport = require("../config/passport");
+const relationApi = require("./relationApi");
 // API Routes
 router.use("/api/", topicApi);
 router.use("/api/", commentApi);
 router.use("/api/",userApi);
 router.use("/api/",loginApi);
 router.use("/api/",registerApi);
+router.use("/api/",relationApi);
 router.use("/logout",(req,res)=>{
    req.session.destroy(err=>res.redirect("/"));
 });

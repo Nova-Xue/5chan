@@ -38,13 +38,13 @@ module.exports = {
             .then(data => console.log(data))
             .catch(err => console.log(err));
       },
-      getFollower : (res,req)=>{
-         sequelize.query("select *from `relationships` where `followId` = "+res.params.id)
+      getFollower : (req,res)=>{
+         db.sequelize.query("select *from `relationships` where `followId` = '"+req.params.id+"'",{ type: sequelize.QueryTypes.SELECT })
          .then(data => res.json(data))
          .catch(err => console.log(err));
       },
-      getFollowing : (res,req)=>{
-         sequelize.query("select *from `relationships` where `UserUid` = "+res.params.id)
+      getFollowing : (req,res)=>{
+         db.sequelize.query("select *from `relationships` where `UserUid` = '"+req.params.id+"'",{ type: sequelize.QueryTypes.SELECT })
          .then(data => res.json(data))
          .catch(err => console.log(err));
       }

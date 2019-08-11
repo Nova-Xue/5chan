@@ -17,5 +17,7 @@ export default {
     getUserById : (id)=> axios.get("/api/user/"+id),
     getUserTopic : (id) =>axios.get("/api/topic/user/"+id),
     getUserFollower : (id) =>axios.get("/api/user/follower/"+id),
-    getUserFollower : (id) =>axios.get("/api/user/following/"+id)
+    getUserFollowing : (id) =>axios.get("/api/user/following/"+id),
+    followUser : (data) => axios.post("/api/relation/follow",data),
+    unfollowUser : (data) => axios.delete("/api/relation/unfollow",data)
 }
