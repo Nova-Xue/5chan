@@ -1,9 +1,10 @@
 import React from "react";
-
-export function Row ({children}){
+import "./style.css";
+export function Row (props){
+  
   return (
-    <div className="row">
-      {children}
+    <div className="row rounded">
+      {props.children}
     </div>
   )
 }

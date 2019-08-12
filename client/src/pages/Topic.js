@@ -2,11 +2,14 @@ import React, { Component } from "react";
 import API from "../utils/API";
 import { Row, Col } from "../components/Grid";
 import moment from "../../node_modules/moment";
+import { Card, Form ,Button } from "react-bootstrap";
 class Topic extends Component {
     state = {
         tid: "",
         title: "",
         topicbody: "",
+        createdAt : "",
+        updatedAt : "",
         aid: "",
         author: "",
         comments: [],
@@ -18,7 +21,7 @@ class Topic extends Component {
         editId: "",
         formStatus: false,
         replyId: "",
-        replyBody : "",
+        replyBody: "",
     }
     componentWillMount() {
         this.loadTopic();
@@ -43,6 +46,8 @@ class Topic extends Component {
                     topicbody: result.data.topicbody,
                     author: result.data.author,
                     aid: result.data.aid,
+                    createdAt :result.data.createdAt,
+                    updatedAt : result.data.updatedAt
                 });
             })
             .catch(err => console.log(err));
@@ -66,14 +71,10 @@ class Topic extends Component {
         if (this.state.loginId === "") alert("Please log in first!");
         //shoule be a modal
     }
-    handleComment = () => {
-        this.state.loginId === undefined ?
-            alert("Please log in first!") : this.setState({ commentStatus: !this.state.commentStatus });
-
-    }
-    handleCommentCancel = e => {
+    handleComment = e => {
         e.preventDefault();
-        this.setState({ commentStatus: false });
+         this.state.loginId === undefined ?
+             alert("Please log in first!") : this.setState({ commentStatus: !this.state.commentStatus });
     }
     handleInputChange = e => {
         const { name, value } = e.target;
@@ -88,7 +89,7 @@ class Topic extends Component {
                 window.location.reload();
             })
             .catch(err => console.log(err));
-    }   
+    }
     saveComment = e => {
         e.preventDefault();
         API.createComment({
@@ -97,13 +98,12 @@ class Topic extends Component {
             TopicTid: this.state.tid,
             UserUid: this.state.loginId
         })
-            .then(result =>  {
+            .then(result => {
                 if (result) {
                     this.updateTopicDate();
                 }
             })
             .catch(err => console.log(err));
-
     }
     hanldeEditClick = (e) => {
         const editId = e.target.value;
@@ -116,12 +116,12 @@ class Topic extends Component {
     handleReplyClick = e => {
         const replyId = e.target.value;
         if (this.state.replyId !== replyId) {
-            this.setState({ replyId: replyId});
+            this.setState({ replyId: replyId });
         } else {
             this.setState({ replyId: "" });
         }
     }
-    updateTopicDate = () =>{
+    updateTopicDate = () => {
         API.updateTopic(this.state.tid, {
             UserUid: this.state.loginId
         })
@@ -132,37 +132,37 @@ class Topic extends Component {
             })
             .catch(err => console.log(err));
     }
-    updateComment = e=>{
+    updateComment = e => {
         e.preventDefault();
-        API.updateComment(this.state.editId,{
-            cbody : this.state.commentbody
+        API.updateComment(this.state.editId, {
+            cbody: this.state.commentbody
         })
-        .then(result=> {
-            if (result) {
-                this.updateTopicDate();
-            }
-        })
-        .catch(err=>console.log(err));
+            .then(result => {
+                if (result) {
+                    this.updateTopicDate();
+                }
+            })
+            .catch(err => console.log(err));
     }
-    updateTopic = e=>{
+    updateTopic = e => {
         e.preventDefault();
-        API.updateTopic(this.state.tid,{
-            topicbody : this.state.topicbody
+        API.updateTopic(this.state.tid, {
+            topicbody: this.state.topicbody
         })
-        .then(result=> {
-            if (result) {
-                this.updateTopicDate();
-            }
-        })
-        .catch(err=>console.log(err));
+            .then(result => {
+                if (result) {
+                    this.updateTopicDate();
+                }
+            })
+            .catch(err => console.log(err));
     }
-    submitReply = e=>{
+    submitReply = e => {
         e.preventDefault();
         let replyId = this.state.replyId;
         let comments = this.state.comments;
         let replyTo;
         for (let index = 0; index < comments.length; index++) {
-            if (comments[index].cid === replyId) replyTo= "@"+comments[index].cauthor+" : ";
+            if (comments[index].cid === replyId) replyTo = "@" + comments[index].cauthor + " : ";
         }
         let reply = replyTo + this.state.replyBody;
         API.createComment({
@@ -171,7 +171,7 @@ class Topic extends Component {
             TopicTid: this.state.tid,
             UserUid: this.state.loginId
         })
-            .then(result =>  {
+            .then(result => {
                 if (result) {
                     this.updateTopicDate();
                 }
@@ -179,55 +179,84 @@ class Topic extends Component {
             .catch(err => console.log(err));
     }
     test = () => {
+        alert(this.state.commentStatus);
     }
     render() {
         return (<div>
             <button onClick={this.test}>test</button>
             <div className="container">
-                <Row>
-                    {this.state.title}
-                </Row>
-                <Row>
-                    <Col grid="md-3">
-                        <a href={"/user/"+this.state.aid}>{this.state.author}</a>
-                        should be a card
-                    </Col>
-                    <Col grid="md-9">
-                        {/* edit form for topic */}
-                        {this.state.editId === this.state.tid ? (
-                            <form>
+                {/* topci card */}
+                <Card>
 
-                                <input name="topicbody" defaultValue={this.state.topicbody} onChange={this.handleInputChange} />
-                                <input type="submit" value="Save Change" onClick={this.updateTopic} />
-                                <button onClick={this.hanldeEditClick}>Cancel</button>
-                            </form>
-                        ) :
-                            
+
+                </Card>
+                <Row>
+                    <Col grid="md-2">
+                        <a href={"/user/" + this.state.aid}>{this.state.author}</a>
+                    </Col>
+                    <Col grid="md-10">
+                        <Card>
+                            <Card.Title>{this.state.title}</Card.Title>
+                            <hr />
+                            <Card.Body>
+                                {/* edit form for topic */}
+                                {this.state.editId === this.state.tid ? (
+                                    // <form>
+                                    //     <input name="topicbody" defaultValue={this.state.topicbody} onChange={this.handleInputChange} />
+                                    //     <input type="submit" value="Save Change" onClick={this.updateTopic} />
+                                    //     <button onClick={this.hanldeEditClick}>Cancel</button>
+                                    // </form>
+                                    <Form>
+                                        <Form.Group>
+                                            <Form.Control name="topicbody" defaultValue={this.state.topicbody} onChange={this.handleInputChange}>
+
+                                            </Form.Control>
+                                        </Form.Group>
+                                        <Button type="submit " onClick={this.updateTopic} size="sm">
+                                            Save Change
+                                        </Button>
+                                        <Button type="button" onClick={this.hanldeEditClick} size="sm">
+                                            Cancel
+                                        </Button>
+                                    </Form>
+                                ) :
+                                    (
+                                        // topic body when not updating
+                                        <div>
+                                            {this.state.topicbody}
+                                            {/* edit button for topic */}
+                                            {this.state.aid === this.state.loginId && (<Button value={this.state.tid} onClick={this.hanldeEditClick} size="sm">Edit</Button>)}
+                                        </div>
+                                    )}
+                            </Card.Body>
+                            <Card.Footer>
+                                Posted At {moment(this.state.createdAt).format("YYYY/MM/DD,HH:mm:ss")}
+                                {this.state.createdAt !== this.state.updatedAt && "  Edited at "+moment(this.state.updatedAt).format("YYYY/MM/DD,HH:mm:ss")}
+                            </Card.Footer>
+                        </Card>
+                        <div>
+                        <Button onClick={this.handleComment} size="sm">Comment</Button>
+                        </div>
+                        { this.state.commentStatus &&
                             (
-                                // topic body when not updating
                                 <div>
-                                    {this.state.topicbody}
-                                    {/* edit button for topic */}
-                                    {this.state.aid === this.state.loginId && (<button value={this.state.tid} onClick={this.hanldeEditClick}>Edit</button>)}
+                                <Form>
+                                <Form.Group>
+                                <Form.Label>
+                                    Write Your Comment Here : 
+                                </Form.Label>
+                                <Form.Control type="textarea" name="commentbody" onChange={this.handleInputChange} placeholder="At least 8 letters"/>
+                                </Form.Group>
+                                <Button type="submit" onClick={this.saveComment} size="sm">Save</Button>
+                                <Button type="button" onClick={this.handleComment} size="sm">Cancel</Button>
+                                </Form>
                                 </div>
+                            )
 
-                            )}
-                            
-                        {/* comment button for topic */}
-                        <button onClick={this.handleComment}>
-                            Comment
-                   </button >
+                        }
+
                     </Col>
-                </Row>
-                <Row>
-                    {/*  new comment for topic */}
-                    {this.state.commentStatus && (<form>
-                        Comment :
-                        <input type="txt" name="commentbody" onChange={this.handleInputChange} />
-                        <input type="submit" value="Save Comment" onClick={this.saveComment} />
-                        <button onClick={this.handleCommentCancel}>
-                            Cancel</button >
-                    </form>)}
+
                 </Row>
                 {this.state.comments.length === 0 ? (
                     <Row>
@@ -235,21 +264,19 @@ class Topic extends Component {
                     </Row>
                 ) : this.state.comments.map(comment => (
                     <Row>
-                        <Col grid="md-3">
-                            <a href={"/user/"+comment.UserUid}>
-                            {comment.cauthor}
+                        <Col grid="md-2">
+                            <a href={"/user/" + comment.UserUid}>
+                                {comment.cauthor}
                             </a>
-
-                               should be a card
                         </Col>
-                        <Col grid="md-9">
+                        <Col grid="md-10">
 
                             {this.state.editId === comment.cid ? (
 
                                 // comment update form
                                 <form>
-                                    <input name="commentbody" defaultValue={comment.cbody} onChange={this.handleInputChange}/>
-                                    <input type="submit" value="Save change" onClick={this.updateComment}/>
+                                    <input name="commentbody" defaultValue={comment.cbody} onChange={this.handleInputChange} />
+                                    <input type="submit" value="Save change" onClick={this.updateComment} />
                                     <button value={comment.cid} onClick={this.hanldeEditClick}>Cancel</button>
                                 </form>
                                 // comment update form
@@ -259,23 +286,23 @@ class Topic extends Component {
                                         {comment.cbody}
                                     </div>
                                 )}
-                                {/* to show updated status */}
+                            {/* to show updated status */}
                             <div>
-                                {comment.updateddAt}{comment.createdAt !== comment.updatedAt && (<span>Edited at {moment(comment.updatedAt).format("YYYY/MM/DD,HH:mm:SS")}</span>)}
+                                {comment.updatedAt}{comment.createdAt !== comment.updatedAt && (<span>Edited at {moment(comment.updatedAt).format("YYYY/MM/DD,HH:mm:SS")}</span>)}
                             </div>
-                                {/* reply button of comment*/}
+                            {/* reply button of comment*/}
                             {this.state.loginId !== undefined && <button value={comment.cid} onClick={this.handleReplyClick}>Reply</button>}
-                                {/* edit button of comment */}
+                            {/* edit button of comment */}
                             {this.state.loginId === comment.UserUid && (<button value={comment.cid} onClick={this.hanldeEditClick}>
                                 Edit</button>)}
-                                {/* delete button of comment */}
+                            {/* delete button of comment */}
                             {this.state.loginId === comment.UserUid && (<button value={comment.cid} onClick={this.deleteComment}>
                                 Delete</button>)}
-                                {/* reply from */}
+                            {/* reply from */}
                             {this.state.replyId === comment.cid && (
                                 <form>
                                     <input name="replyTo" value={"@" + comment.cauthor} readOnly />
-                                    <input name="replyBody" type="text" onChange={this.handleInputChange}/>
+                                    <input name="replyBody" type="text" onChange={this.handleInputChange} />
                                     {/* button to submit reply */}
                                     <input type="submit" value="Post Reply" onClick={this.submitReply} />
                                     <button value={comment.cid} onClick={this.handleReplyClick}>Cancel</button>

@@ -1,0 +1,21 @@
+.row:hover   {
+    border-style: solid;
+    border-width: thin;
+}
+.row {
+    margin: 1rem;
+    background-color: paleturquoise;
+    padding: 1rem;
+}
+.author
+,.date{
+    font-family: 'Oswald', sans-serif;
+    font-size: 1.5rem
+}
+.title{
+    font-family: 'DM Serif Text', serif;
+    font-size: 1.5rem;
+}
+.col-md-10{
+    font-family: 'Libre Franklin', sans-serif;
+}

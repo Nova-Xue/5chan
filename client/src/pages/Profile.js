@@ -210,7 +210,7 @@ class Profile extends Component {
                                         Posted at {moment(topic.createdAt).format("YYYY/MM/DD,HH:mm:ss")}
                                     </span>
                                     {this.state.loginId === this.state.uid && (
-                                        <button vaule={topic.tid} onClick={this.handleTitleClick}>
+                                        <button vaule={topic.tid} onClick={this.handleDeleteClick}>
                                             Delete
                                     </button>)}
                                 </Row>
