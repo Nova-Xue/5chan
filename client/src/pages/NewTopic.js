@@ -14,7 +14,14 @@ class NewTopic extends Component {
     getUser = () => {
         
         API.getUser()
-        .then(result => this.setState({username : result.data.username, uid : result.data.uid}));
+        .then(result => {
+            if(result.data){
+                this.setState({username : result.data.username, uid : result.data.uid});
+            }else{
+                window.location.href="/";
+            }
+            
+        });
     }
     handleInputChange = e => {
         const { name, value } = e.target;

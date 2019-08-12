@@ -8,6 +8,8 @@ import Profile from "./pages/Profile";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import NewTopic from "./pages/NewTopic";
+import { NavBtn } from "./components/Buttons";
+import "./App.css";
 class App extends React.Component {
   state = {
     uid: "",
@@ -47,6 +49,7 @@ logout = ()=>{
     .then(result =>window.location.reload())
     .catch(err=>console.log(err));
 }
+
   render(){
     return (
       <div>
@@ -59,7 +62,7 @@ logout = ()=>{
                       link="/"
                   />
                   {this.state.username ? (
-                      <div>
+                      <div className="home-div">
                           <NavItemRight
                           text="New Topic"
                           link="/newtopic"/>
@@ -70,20 +73,24 @@ logout = ()=>{
                           <button onClick={this.logout}> Log out</button>
                       </div>
                   ) : (
-                      <div>
+                      <div className="login-div">
                           <NavItemRight text="Please Login"/>
-                          <NavItemRight
+                          {/* <NavItemRight
                           text="Sign up"
                           link="/register"/>
                           <NavItemRight
                           text="Log In"
-                          link="/login"/>
+                          link="/login"/> */}
+                          <a className="btn btn-info" href="/login">Log In</a>
+                          <a className="btn btn-info" href="/register">Sign Up</a>
+                          
                       </div>
                   
                   )}
                   </Nav>
-                  <div>
-                    Welcome to 5chan
+                  <section className="content">
+                  <div className="welcome">
+                    <span>Welcome to 5chan</span>
                   </div>
                   <Router>
                       <Switch>
@@ -95,6 +102,8 @@ logout = ()=>{
                         <Route exact path="/newtopic" component={NewTopic} />
                       </Switch>
                     </Router>
+                  </section>
+                  
       </div>
     );
   }

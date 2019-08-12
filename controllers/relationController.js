@@ -5,11 +5,15 @@ module.exports = {
         .then(data => res.json(data))
         .catch(err=>console.log(err))
       },
-      delete : (req,res)=>{
+      deleteByBody : (req,res)=>{
+        
         db.Relationship.destroy({
-          where : req.body
+          where : {
+            followId : req.body.followId,
+            UserUid : req.body.UserUid
+          }
         })
         .then(data => res.json(data))
-        .catch(err=>console.log(err))
+        .catch(err=>console.log(err));
       }
 }

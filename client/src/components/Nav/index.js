@@ -2,7 +2,7 @@ import React from "react";
 
 export function Nav({children}) {
   return (
-    <nav className="navbar navbar-expand-lg navbar-dark bg-primary">
+    <nav className="navbar navbar-expand-lg navbar-dark bg-light">
       {children}
     </nav>
   );

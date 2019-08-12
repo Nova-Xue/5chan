@@ -19,7 +19,7 @@ class Profile extends Component {
         this.loadTopic();
         this.getUser();
         this.loadFollower();
-        //this.loadFollowing();
+        this.loadFollowing();
     }
     loadTopic = () => {
         API.getUserTopic(this.props.match.params.id)
@@ -90,13 +90,13 @@ class Profile extends Component {
             .then(result => window.location.reload())
             .catch(err => console.log(err));
     }
-    unfollowUser = () => {
+    unfollowUser = () => { 
         API.unfollowUser({
-            followId: this.state.uid,
-            UserUid: this.state.loginId
+            followId : this.state.uid,
+            UserUid : this.state.loginId
         })
-            .then(result => window.location.reload())
-            .catch(err => console.log(err));
+        .then(result => window.location.reload())
+        .catch(err => console.log(err));
     }
     relation = () => {
         if (this.state.loginId===undefined ||this.state.loginId === this.state.uid) return "";
@@ -113,7 +113,7 @@ class Profile extends Component {
         }
     }
     test = () => {
-        alert(this.relation());
+        alert(this.state.uid);
     }
     render() {
         let btnDiv;
