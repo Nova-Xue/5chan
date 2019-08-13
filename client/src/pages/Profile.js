@@ -159,7 +159,7 @@ class Profile extends Component {
 
                 )
                 break;
-            case "":
+            default:
                 btnDiv = (
                     <div>
 

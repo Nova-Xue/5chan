@@ -1,6 +1,6 @@
 import React from "react";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
-import { Nav, NavItemLeft, NavItemRight } from "./components/Nav";
+import { Nav } from "./components/Nav";
 import API from "./utils/API";
 import Main from "./pages/Main";
 import Topic from "./pages/Topic";
@@ -36,7 +36,7 @@ class App extends React.Component {
             email: this.state.email,
             password: this.state.password
         };
-        if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(userData.email)==false) {
+        if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(userData.email)===false) {
                 alert("You have entered an invalid email address!");
                 return;
         }
@@ -68,7 +68,7 @@ class App extends React.Component {
     }
     handleRegister = event => {
         event.preventDefault();
-        if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(this.state.email)==false) {
+        if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(this.state.email)===false) {
             alert("You have entered an invalid email address!");
             this.setState({email : ""});
             return;
