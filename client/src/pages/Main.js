@@ -25,25 +25,25 @@ class Main extends Component {
     render() {
         return (
             <div>
-                <div>
-                    Pagination
+                <div className="pagination">
+                    <span>Pagination</span>
                 </div>
                 <div className="container">
                     {
                         this.state.topics.map(topic => (
                             <Row>
-                                <Col grid="md-2 author">
+                                <Col grid="lg-2 author">
                                     <a href={"/user/" + topic.aid}>
                                         {topic.author}
                                     </a>
                                 </Col>
-                                <Col grid="md-6 title">
+                                <Col grid="lg-6 title">
                                 <a href={"/topic/" + topic.tid}><u>{topic.title}</u></a>
                                 </Col>
-                                <Col grid="md-2 date">
+                                <Col grid="lg-2 date">
                                 {moment(topic.createdAt).format("MM/DD,HH:mm")}
                                 </Col>
-                                <Col grid="md-2 date">
+                                <Col grid="lg-2 date">
                                 {moment(topic.updatedAt).format("MM/DD,HH:mm")} by <a href={"/user/"+topic.User.uid}>{topic.User.username}</a>
                                 </Col>
                             </Row>

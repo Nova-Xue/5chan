@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import API from "../utils/API";
 import { Row, Col } from "../components/Grid";
 import moment from "../../node_modules/moment";
+import { Card,Button } from "react-bootstrap";
 class Profile extends Component {
     state = {
         username: "",
@@ -55,7 +56,7 @@ class Profile extends Component {
                     array.push(element.followId);
                 });
                 this.setState({
-                    followingId : array
+                    followingId: array
                 });
             })
             .catch(err => console.log(err));
@@ -68,7 +69,7 @@ class Profile extends Component {
                     array.push(element.UserUid);
                 });
                 this.setState({
-                    followerId : array
+                    followerId: array
                 });
             })
             .catch(err => console.log(err));
@@ -90,16 +91,16 @@ class Profile extends Component {
             .then(result => window.location.reload())
             .catch(err => console.log(err));
     }
-    unfollowUser = () => { 
+    unfollowUser = () => {
         API.unfollowUser({
-            followId : this.state.uid,
-            UserUid : this.state.loginId
+            followId: this.state.uid,
+            UserUid: this.state.loginId
         })
-        .then(result => window.location.reload())
-        .catch(err => console.log(err));
+            .then(result => window.location.reload())
+            .catch(err => console.log(err));
     }
     relation = () => {
-        if (this.state.loginId===undefined ||this.state.loginId === this.state.uid) return "";
+        if (this.state.loginId === undefined || this.state.loginId === this.state.uid) return "";
         if (this.state.followerId.includes(this.state.loginId)) {
             if (this.state.followingId.includes(this.state.loginId)) {
                 return "Friend"
@@ -111,6 +112,12 @@ class Profile extends Component {
         } else {
             return "Stranger"
         }
+    }
+    handleDeleteClick= e =>{
+        //alert(e.target["value"]);
+        API.deleteTopic(e.target["value"])
+        .then(result=> result&& window.location.reload())
+        .catch(err=>console.log(err));
     }
     test = () => {
         alert(this.state.uid);
@@ -162,63 +169,71 @@ class Profile extends Component {
         }
 
         return (
-            <div>
-                <div>
-                    <span>
-                        {this.state.username}
-                    </span>
-                    {/* conditional button */}
-                    {btnDiv}
-                    {/* follow button  unfollow button following state friends following stranger */}
-                    <br />
-                    <span>
-                        Join 5chan since {moment(this.state.date).format("YYYY.MM.DD")}
-                    </span>
+            <div className="container">
+                <Row>
+                    <Col grid="lg-3">
+                        <Card>
+                            <Card.Title>
+                                {this.state.username}
+                            </Card.Title>
+                            <Card.Body>
+                                <span>
+                                    Join 5chan since {moment(this.state.date).format("YYYY.MM.DD")}
+                                </span>
 
-                    <br />
-                    <span>
-                        follower
-                    </span>
-                    <span>
-                        {this.state.followerId.length}
-                    </span>
-                    <span>
-                        following
-                    </span>
-                    <span>
-                        {this.state.followingId.length}
-                    </span>
-                </div>
-                <div>
-                    profile update
-                </div>
-                <button onClick={this.test}>test</button>
-                <div className="container">
+                                <br />
+                                <span>
+                                    follower : 
+                                </span>
+                                <span>
+                                    {this.state.followerId.length}
+                                </span><br/>
+                                <span>
+                                    following: 
+                                </span>
+                                <span>
+                                    {this.state.followingId.length}
+                                </span>
+                            </Card.Body>
+                            <Card.Footer>
+                                {btnDiv}
+                            </Card.Footer>
+                        </Card>
+                        {this.state.loginId===this.state.uid && (<Button onClick={()=>window.location.href="/newtopic"}>New Topic</Button>)}
+                    </Col>
+                    <Col grid="lg-9">
                     {this.state.topics.length === 0 ? (
                         <span>
-                            You don't have any topic
+                             Don't have any topic
                     </span>
 
                     ) :
                         this.state.topics.map(
                             topic => (
-                                <Row>
+                                <div>
+                                    <Row>
+                                    <div className="title">
                                     <a href={"/topic/" + topic.tid}>
                                         {topic.title}
                                     </a>
+                                    </div>
+                                    
+                                </Row>
+                                <div className="date">
                                     <span>
                                         Posted at {moment(topic.createdAt).format("YYYY/MM/DD,HH:mm:ss")}
                                     </span>
-                                    {this.state.loginId === this.state.uid && (
-                                        <button vaule={topic.tid} onClick={this.handleDeleteClick}>
+                                    {/* {this.state.loginId === this.state.uid && (
+                                        <Button value={topic.tid} onClick={this.handleDeleteClick}>
                                             Delete
-                                    </button>)}
-                                </Row>
+                                    </Button>)} */} 
+                                    </div>
+                            </div>
                             )
                         )
                     }
-                </div>
-
+                    </Col>
+                </Row>
             </div>
         )
     }

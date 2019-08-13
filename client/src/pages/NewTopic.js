@@ -1,5 +1,7 @@
 import React, { Component } from "react";
 import API from "../utils/API";
+import { Row ,Col} from "../components/Grid";
+import { Form , Button} from "react-bootstrap";
 
 class NewTopic extends Component {
     state = {
@@ -12,15 +14,13 @@ class NewTopic extends Component {
       this.getUser();
     }
     getUser = () => {
-        
         API.getUser()
         .then(result => {
-            if(result.data){
+            if(result.data.uid !==  undefined){
                 this.setState({username : result.data.username, uid : result.data.uid});
             }else{
                 window.location.href="/";
             }
-            
         });
     }
     handleInputChange = e => {
@@ -44,16 +44,40 @@ class NewTopic extends Component {
     }
     render() {
         return (
-        <div>
-               <form>
-                   title :
-                   <input type="text" name="title" value={this.state.title} onChange={this.handleInputChange}></input>
-                   author :
-                   <input type="text" name="author" value={this.state.username} onChange={this.handleInputChange} readOnly></input>
-                   content :
-                   <input type="text" name="topicbody" value={this.state.topicbody} onChange={this.handleInputChange}></input>
-                   <input type="submit" onClick={this.handleFormSubmit}></input>
-               </form>
+        <div className="container">
+               <Row>
+                   <Col grid="md-12">
+                   <Form>
+                    <Form.Group>
+                        <Form.Label>
+                            Title :
+                        </Form.Label>
+                        <Form.Control name="title" placeholder="Enter your title" onChange={this.handleInputChange} >
+                        </Form.Control>
+                    </Form.Group>
+
+                    <Form.Group>
+                        <Form.Label>
+                            Author :
+                        </Form.Label>
+                        <Form.Control name="author" value={this.state.username} readOnly >
+                        </Form.Control>
+                    </Form.Group>
+
+                    <Form.Group>
+                        <Form.Label>
+                            Content :
+                        </Form.Label>
+                        <Form.Control name="topicbody" placeholder="Enter your content" as="textarea" rows="5" onChange={this.handleInputChange} >
+                        </Form.Control>
+                    </Form.Group>
+
+                    <Button type="submit" onClick={this.handleFormSubmit} size="sm">
+                            Post
+                    </Button>
+                   </Form>
+                   </Col>
+               </Row>
 
         </div>
         )

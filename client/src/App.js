@@ -6,17 +6,17 @@ import Main from "./pages/Main";
 import Topic from "./pages/Topic";
 import Profile from "./pages/Profile";
 import NewTopic from "./pages/NewTopic";
-import { Button, Modal, Form } from "react-bootstrap";
+import { Button, Modal, Form, Image } from "react-bootstrap";
 import "./App.css";
 class App extends React.Component {
     state = {
         uid: "",
         username: "",
         loginModal: false,
-        registerModal :false,
+        registerModal: false,
         email: "",
         password: "",
-        conPassword : "",
+        conPassword: "",
     }
     componentDidMount() {
         this.getLoginUser();
@@ -46,12 +46,12 @@ class App extends React.Component {
                         window.location.reload();
                     } else {
                         alert("wrong password");
-                        this.refs.password.value="";
+                        this.refs.password.value = "";
                     }
                 } else {
                     alert("no such email");
-                    this.refs.email.value="";
-                    this.refs.password.value="";
+                    this.refs.email.value = "";
+                    this.refs.password.value = "";
                 }
             })
             .catch(function (err) {
@@ -69,7 +69,7 @@ class App extends React.Component {
         })
             .then(data => {
                 if (data) {
-                 window.location.reload();
+                    window.location.reload();
                 }
             })
             .catch(err => console.log(err));
@@ -140,7 +140,7 @@ class App extends React.Component {
 
                         <Form.Group controlId="formBasicPassword">
                             <Form.Label>Password</Form.Label>
-                            <Form.Control type="password" name="password" placeholder="Enter password" onChange={this.handleInputChange} ref="password"/>
+                            <Form.Control type="password" name="password" placeholder="Enter password" onChange={this.handleInputChange} ref="password" />
                         </Form.Group>
                         <Button variant="primary" type="submit" onClick={this.handleLogin}>
                             Login
@@ -198,8 +198,8 @@ class App extends React.Component {
                 {/* nav  */}
                 <Nav>
                     <div className="left-div">
-                    <span>A logo</span>
-                    <a className="btn btn-info" href="/">Home</a>
+                        <Image src="https://cdn1.vectorstock.com/i/thumb-large/91/60/number-5-logo-icon-design-template-elements-vector-21659160.jpg" rounded thumbnail />
+                        <a className="btn btn-info" href="/">Home</a>
                     </div>
                     {this.state.username ? (
                         <div className="right-div">
@@ -223,6 +223,7 @@ class App extends React.Component {
                 {registerModal}
                 {/* modals */}
                 {/* content body */}
+
                 <section className="content">
                     {/* welcome section */}
                     <div className="welcome">
@@ -241,9 +242,7 @@ class App extends React.Component {
                     {/* router ends */}
                 </section>
                 {/* content ends */}
-                {/* footer */}
-
-                {/* footer ends */}
+                
             </div>
             // div ends
         );

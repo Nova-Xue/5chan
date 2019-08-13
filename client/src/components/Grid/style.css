@@ -3,7 +3,7 @@
     border-width: thin;
 }
 .row {
-    margin: 1rem;
+    margin-bottom: 1rem;
     background-color: paleturquoise;
     padding: 1rem;
 }
@@ -16,6 +16,6 @@
     font-family: 'DM Serif Text', serif;
     font-size: 1.5rem;
 }
-.col-md-10{
+.col-lg-10{
     font-family: 'Libre Franklin', sans-serif;
 }

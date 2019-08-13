@@ -162,7 +162,8 @@ class Topic extends Component {
         let comments = this.state.comments;
         let replyTo;
         for (let index = 0; index < comments.length; index++) {
-            if (comments[index].cid === replyId) replyTo = "@" + comments[index].cauthor + " : ";
+            // <a href="/user/uid">replyTo</a>
+            if (comments[index].cid === replyId) replyTo = "<a href='/user/"+replyId+"'>@" + comments[index].cauthor+"</a>"+ " : ";
         }
         let reply = replyTo + this.state.replyBody;
         API.createComment({
@@ -182,30 +183,25 @@ class Topic extends Component {
         alert(this.state.commentStatus);
     }
     render() {
-        return (<div>
-            <button onClick={this.test}>test</button>
+        return (
+        <div>
+            <div className="pagination">
+            Pagination
+            </div>
             <div className="container">
                 {/* topci card */}
-                <Card>
-
-
-                </Card>
+                
                 <Row>
-                    <Col grid="md-2">
+                    <Col grid="lg-2">
                         <a href={"/user/" + this.state.aid}>{this.state.author}</a>
                     </Col>
-                    <Col grid="md-10">
+                    <Col grid="lg-10">
                         <Card>
                             <Card.Title>{this.state.title}</Card.Title>
                             <hr />
                             <Card.Body>
                                 {/* edit form for topic */}
                                 {this.state.editId === this.state.tid ? (
-                                    // <form>
-                                    //     <input name="topicbody" defaultValue={this.state.topicbody} onChange={this.handleInputChange} />
-                                    //     <input type="submit" value="Save Change" onClick={this.updateTopic} />
-                                    //     <button onClick={this.hanldeEditClick}>Cancel</button>
-                                    // </form>
                                     <Form>
                                         <Form.Group>
                                             <Form.Control name="topicbody" defaultValue={this.state.topicbody} onChange={this.handleInputChange}>
@@ -230,8 +226,10 @@ class Topic extends Component {
                                     )}
                             </Card.Body>
                             <Card.Footer>
+                                <div className="date">
                                 Posted At {moment(this.state.createdAt).format("YYYY/MM/DD,HH:mm:ss")}
-                                {this.state.createdAt !== this.state.updatedAt && "  Edited at "+moment(this.state.updatedAt).format("YYYY/MM/DD,HH:mm:ss")}
+                                {this.state.createdAt !== this.state.updatedAt && "  Edited at "+moment(this.state.updatedAt).format("YYYY/MM/DD,HH:mm:ss")} 
+                                </div>
                             </Card.Footer>
                         </Card>
                         <div>
@@ -239,6 +237,7 @@ class Topic extends Component {
                         </div>
                         { this.state.commentStatus &&
                             (
+                                // comment form
                                 <div>
                                 <Form>
                                 <Form.Group>
@@ -264,49 +263,58 @@ class Topic extends Component {
                     </Row>
                 ) : this.state.comments.map(comment => (
                     <Row>
-                        <Col grid="md-2">
+                        <Col grid="lg-2">
                             <a href={"/user/" + comment.UserUid}>
                                 {comment.cauthor}
                             </a>
                         </Col>
-                        <Col grid="md-10">
+                        <Col grid="lg-10">
 
                             {this.state.editId === comment.cid ? (
+                                //edit comment form
+                                <Form>
+                                    <Form.Control name="commentbody" defaultValue={comment.cbody} onChange={this.handleInputChange} >
 
-                                // comment update form
-                                <form>
-                                    <input name="commentbody" defaultValue={comment.cbody} onChange={this.handleInputChange} />
-                                    <input type="submit" value="Save change" onClick={this.updateComment} />
-                                    <button value={comment.cid} onClick={this.hanldeEditClick}>Cancel</button>
-                                </form>
-                                // comment update form
+                                    </Form.Control>
+                                    <Button type="submit" onClick={this.updateComment} size="sm">Save Change</Button>
+                                    <Button value={comment.cid} onClick={this.hanldeEditClick} size="sm">Cancel</Button>
+                                </Form>
+
+                                
                             ) :
                                 (
-                                    <div>
-                                        {comment.cbody}
-                                    </div>
+                                    //comment body 
+                                    <div dangerouslySetInnerHTML={{ __html: comment.cbody }} />
                                 )}
                             {/* to show updated status */}
-                            <div>
-                                {comment.updatedAt}{comment.createdAt !== comment.updatedAt && (<span>Edited at {moment(comment.updatedAt).format("YYYY/MM/DD,HH:mm:SS")}</span>)}
+                            <div className="date">
+                                {moment(comment.updatedAt).format("YYYY/MM/DD,HH:mm:SS")}{comment.createdAt !== comment.updatedAt && (<span>Edited</span>)}
                             </div>
                             {/* reply button of comment*/}
-                            {this.state.loginId !== undefined && <button value={comment.cid} onClick={this.handleReplyClick}>Reply</button>}
+                            {this.state.loginId !== undefined && <Button value={comment.cid} onClick={this.handleReplyClick} size="sm">Reply</Button>}
                             {/* edit button of comment */}
-                            {this.state.loginId === comment.UserUid && (<button value={comment.cid} onClick={this.hanldeEditClick}>
-                                Edit</button>)}
+                            {this.state.loginId === comment.UserUid && (<Button value={comment.cid} onClick={this.hanldeEditClick} size="sm">
+                                Edit</Button>)}
                             {/* delete button of comment */}
-                            {this.state.loginId === comment.UserUid && (<button value={comment.cid} onClick={this.deleteComment}>
-                                Delete</button>)}
+                            {this.state.loginId === comment.UserUid && (<Button value={comment.cid} onClick={this.deleteComment} size="sm">
+                                Delete</Button>)}
                             {/* reply from */}
                             {this.state.replyId === comment.cid && (
-                                <form>
-                                    <input name="replyTo" value={"@" + comment.cauthor} readOnly />
-                                    <input name="replyBody" type="text" onChange={this.handleInputChange} />
-                                    {/* button to submit reply */}
-                                    <input type="submit" value="Post Reply" onClick={this.submitReply} />
-                                    <button value={comment.cid} onClick={this.handleReplyClick}>Cancel</button>
-                                </form>
+                                //reply form 
+                                <Form>
+                                    <Form.Label>
+                                        Reply to {"@"+comment.cauthor}
+                                    </Form.Label>
+                                    <Form.Control name="replyBody" type="text" onChange={this.handleInputChange}>
+                                    </Form.Control>
+                                    <Button type="submit" onClick={this.submitReply} size="sm">
+                                        Post Reply
+                                    </Button>
+                                    <Button value={comment.cid} onClick={this.handleReplyClick} size="sm">
+                                        Cancel
+                                    </Button>
+                                </Form>
+                                //reply form
                             )}
 
 
