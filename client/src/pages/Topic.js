@@ -180,7 +180,6 @@ class Topic extends Component {
         
         let replyTo;
         for (let index = 0; index < comments.length; index++) {
-            // <a href="/user/uid">replyTo</a>
             if (comments[index].cid === replyId) replyTo = "<a href='/user/"+replyId+"'>@" + comments[index].cauthor+"</a>"+ " : ";
         }
         let reply = replyTo + this.state.replyBody;
