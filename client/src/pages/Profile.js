@@ -130,7 +130,7 @@ class Profile extends Component {
                     <span>
                         Friend
                         </span>
-                    <button onClick={this.unfollowUser}>Unfollow</button>
+                    <Button onClick={this.unfollowUser} size="sm">Unfollow</Button>
                 </div>)
                 break;
             case "Following":
@@ -139,7 +139,7 @@ class Profile extends Component {
                         <span>
                             You are following this user
                         </span>
-                        <button onClick={this.unfollowUser}>Unfollow</button>
+                        <Button onClick={this.unfollowUser} size="sm">Unfollow</Button>
                     </div>
                 )
                 break;
@@ -147,14 +147,14 @@ class Profile extends Component {
                 btnDiv = (
                     <div>
                         <span> Following you</span>
-                        <button onClick={this.followUser}>Follow</button>
+                        <Button onClick={this.followUser} size="sm">Follow</Button>
                     </div>
                 )
                 break;
             case "Stranger":
                 btnDiv = (
                     <div>
-                        <button onClick={this.followUser}>Follow</button>
+                        <Button onClick={this.followUser} size="sm">Follow</Button>
                     </div>
 
                 )

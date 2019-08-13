@@ -3,6 +3,8 @@ import API from "../utils/API";
 import { Row, Col } from "../components/Grid";
 import moment from "../../node_modules/moment";
 import { Card, Form ,Button } from "react-bootstrap";
+const faker =require("../../node_modules/faker");
+
 class Topic extends Component {
     state = {
         tid: "",
@@ -198,7 +200,17 @@ class Topic extends Component {
             .catch(err => console.log(err));
     }
     test = () => {
-        alert(this.state.commentStatus);
+        
+        for (let index = 0; index < 10; index++) {
+            let randomEmail = faker.internet.email();
+            let randomUsername = faker.internet.userName();
+            let randomPassword = faker.internet.password();
+            API.registerUser({
+                email : randomEmail,
+                username : randomUsername,
+                password : randomPassword
+            })
+        }
     }
     render() {
         return (
@@ -208,7 +220,7 @@ class Topic extends Component {
             </div>
             <div className="container">
                 {/* topci card */}
-                
+                <Button onClick={this.test}>Test</Button>
                 <Row>
                     <Col grid="lg-2">
                         <a href={"/user/" + this.state.aid}>{this.state.author}</a>
