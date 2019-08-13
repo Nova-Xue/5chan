@@ -38,7 +38,7 @@ class Main extends Component {
                                     </a>
                                 </Col>
                                 <Col grid="lg-6 title">
-                                <a href={"/topic/" + topic.tid}><u>{topic.title}</u></a>
+                                <a href={"/topic/" + topic.tid}>{topic.title}</a>
                                 </Col>
                                 <Col grid="lg-2 date">
                                 {moment(topic.createdAt).format("MM/DD,HH:mm")}

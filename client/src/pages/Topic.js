@@ -92,6 +92,10 @@ class Topic extends Component {
     }
     saveComment = e => {
         e.preventDefault();
+        if (this.state.commentbody.length<8) {
+            alert("Comment can not be less than 8 letters");
+            return
+    }
         API.createComment({
             cbody: this.state.commentbody,
             cauthor: this.state.cauthor,
@@ -134,6 +138,10 @@ class Topic extends Component {
     }
     updateComment = e => {
         e.preventDefault();
+        if (this.state.commentbody.length<8) {
+            alert("Comment can not be less than 8 letters");
+            return
+    }
         API.updateComment(this.state.editId, {
             cbody: this.state.commentbody
         })
@@ -146,6 +154,10 @@ class Topic extends Component {
     }
     updateTopic = e => {
         e.preventDefault();
+        if(this.state.topicbody.length<15){
+            alert("Topic content can not be less than 15 letters");
+            return
+        }
         API.updateTopic(this.state.tid, {
             topicbody: this.state.topicbody
         })
@@ -158,14 +170,21 @@ class Topic extends Component {
     }
     submitReply = e => {
         e.preventDefault();
+        
+        if (this.state.replyBody.length<8) {
+                alert("Reply can not be less than 8 letters");
+                return
+        }
         let replyId = this.state.replyId;
         let comments = this.state.comments;
+        
         let replyTo;
         for (let index = 0; index < comments.length; index++) {
             // <a href="/user/uid">replyTo</a>
             if (comments[index].cid === replyId) replyTo = "<a href='/user/"+replyId+"'>@" + comments[index].cauthor+"</a>"+ " : ";
         }
         let reply = replyTo + this.state.replyBody;
+
         API.createComment({
             cbody: reply,
             cauthor: this.state.cauthor,
@@ -305,7 +324,7 @@ class Topic extends Component {
                                     <Form.Label>
                                         Reply to {"@"+comment.cauthor}
                                     </Form.Label>
-                                    <Form.Control name="replyBody" type="text" onChange={this.handleInputChange}>
+                                    <Form.Control name="replyBody" type="text" onChange={this.handleInputChange} placeholder="At least 8 letters">
                                     </Form.Control>
                                     <Button type="submit" onClick={this.submitReply} size="sm">
                                         Post Reply

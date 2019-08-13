@@ -10,7 +10,7 @@ export function Row (props){
 }
 export function Col (props){
   return (
-    <div className={"col-"+props.grid}>
+    <div className={"col col-"+props.grid}>
       {props.children}
     </div>
   )

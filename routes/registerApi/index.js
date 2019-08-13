@@ -3,8 +3,6 @@ router.use("/register",function(req,res){
     console.log("in register routes");
       User.create(req.body)
       .then(function(data) {
-          console.log(data);
-          
         res.json(data);
       })
       .catch(function(err) {

@@ -32,6 +32,16 @@ class NewTopic extends Component {
     handleFormSubmit = e =>{
         e.preventDefault();
         //validate title and tbody
+        let topicBody = this.state.topicbody;
+        let title = this.state.title;
+        if (title.length<5) {
+            alert("Title can not be less than 5 letters");
+            return
+        }
+        if (topicBody.length<15) {
+            alert("Content can not be less than 15 letters");
+            return
+        }
         API.createTopic({
             topicbody : this.state.topicbody,
             title : this.state.title,
@@ -52,7 +62,7 @@ class NewTopic extends Component {
                         <Form.Label>
                             Title :
                         </Form.Label>
-                        <Form.Control name="title" placeholder="Enter your title" onChange={this.handleInputChange} >
+                        <Form.Control name="title" placeholder="Enter your title (Must be longer than 5 letters)" onChange={this.handleInputChange}>
                         </Form.Control>
                     </Form.Group>
 
@@ -68,7 +78,7 @@ class NewTopic extends Component {
                         <Form.Label>
                             Content :
                         </Form.Label>
-                        <Form.Control name="topicbody" placeholder="Enter your content" as="textarea" rows="5" onChange={this.handleInputChange} >
+                        <Form.Control name="topicbody" placeholder="Enter your content (Must be longer than 15 letters)" as="textarea" rows="5" onChange={this.handleInputChange} >
                         </Form.Control>
                     </Form.Group>
 

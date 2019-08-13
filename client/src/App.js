@@ -12,6 +12,7 @@ class App extends React.Component {
     state = {
         uid: "",
         username: "",
+        registername:"",
         loginModal: false,
         registerModal: false,
         email: "",
@@ -30,11 +31,17 @@ class App extends React.Component {
     handleLogin = e => {
         e.preventDefault();
         //passport.js
+
         var userData = {
             email: this.state.email,
             password: this.state.password
         };
-        if (!userData.email || !userData.password) {
+        if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(userData.email)==false) {
+                alert("You have entered an invalid email address!");
+                return;
+        }
+        if(userData.password.length<8){
+            alert("You have entered an invalid password!")
             return;
         }
         // If we have an email and password we run the loginUser function and clear the form
@@ -61,18 +68,45 @@ class App extends React.Component {
     }
     handleRegister = event => {
         event.preventDefault();
+        if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(this.state.email)==false) {
+            alert("You have entered an invalid email address!");
+            this.setState({email : ""});
+            return;
+            }
+        if(this.state.registername.length<6){
+            alert("You have entered an invalid username!");
+            this.setState({registername : ""});
+            return;
+        }
+        if(this.state.password.length<8){
+            alert("You have entered an invalid password!");
+            this.setState({password : ""});
+            return;
+        }
+        if(this.state.password !==this.state.conPassword){
+
+            alert("Please confirm your password!");
+            this.setState({password : "",conPassword : ""});
+            return;
+        }
 
         API.registerUser({
             email: this.state.email,
             password: this.state.password,
-            username: this.state.username
+            username: this.state.registername
         })
-            .then(data => {
-                if (data) {
+            .then(result => {
+                if (result) {
+
                     window.location.reload();
                 }
             })
-            .catch(err => console.log(err));
+            .catch(err =>console.log(err));
+
+        this.setState({
+            password : "",
+            conPassword: ""
+        })
     }
     getLoginUser = () => {
 
@@ -92,7 +126,6 @@ class App extends React.Component {
                 this.setState({ topics: array });
             })
             .catch(err => console.log(err));
-        //loadComCount   res => this.setState({ topics: res.data })
     }
     checkUser = e => {
         if (!this.state.uid) {
@@ -140,7 +173,7 @@ class App extends React.Component {
 
                         <Form.Group controlId="formBasicPassword">
                             <Form.Label>Password</Form.Label>
-                            <Form.Control type="password" name="password" placeholder="Enter password" onChange={this.handleInputChange} ref="password" />
+                            <Form.Control type="password" name="password" placeholder="Enter password (At least 8 letters)" onChange={this.handleInputChange} value={this.state.password} />
                         </Form.Group>
                         <Button variant="primary" type="submit" onClick={this.handleLogin}>
                             Login
@@ -163,22 +196,22 @@ class App extends React.Component {
                     <Form>
                         <Form.Group controlId="formBasicEmail">
                             <Form.Label>Email address</Form.Label>
-                            <Form.Control type="email" name="email" placeholder="Enter email" onChange={this.handleInputChange} />
+                            <Form.Control type="email" name="email" placeholder="Enter email" onChange={this.handleInputChange} value={this.state.email}/>
                             <Form.Text className="text-muted">
                                 We'll never share your email with anyone else.And your email will be your account to login.
                             </Form.Text>
                         </Form.Group>
                         <Form.Group>
                             <Form.Label>Username</Form.Label>
-                            <Form.Control type="text" name="username" placeholder="Enter username" onChange={this.handleInputChange} />
+                            <Form.Control type="text" name="registername" placeholder="Enter username (At least 6 letters)" onChange={this.handleInputChange} value={this.state.registername}/>
                         </Form.Group>
                         <Form.Group controlId="formBasicPassword">
                             <Form.Label>Password</Form.Label>
-                            <Form.Control type="password" name="password" placeholder="Password" onChange={this.handleInputChange} />
+                            <Form.Control type="password" name="password" placeholder="Password (At least 8 letters)" onChange={this.handleInputChange} value={this.state.password}/>
                         </Form.Group>
                         <Form.Group controlId="formBasicPassword">
                             <Form.Label>Confirm Password</Form.Label>
-                            <Form.Control type="password" name="conPassword" placeholder="Confirm Password" onChange={this.handleInputChange} />
+                            <Form.Control type="password" name="conPassword" placeholder="Confirm Password (Must be same as your password)" onChange={this.handleInputChange} value={this.state.conPassword}/>
                         </Form.Group>
                         <Button variant="primary" type="submit" onClick={this.handleRegister}>
                             Sign Up!
